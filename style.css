@@ -1,7 +1,7 @@
-/* ===========================
+/* ===============================
    NEON GAMER - style.css
-   Versão Melhorada Completa
-=========================== */
+   Versão Melhorada Completa e Otimizada (Instagram Corrigido)
+=============================== */
 
 /* --------- variables --------- */
 :root{
@@ -68,6 +68,15 @@ body{
   position:relative; 
   border-radius:50%;
   transition: transform 0.3s ease;
+  
+  /* CORREÇÃO VISIBILIDADE DA FOTO: Aplica a borda e o gradiente no container */
+  border:3px solid transparent;
+  background: linear-gradient(45deg, var(--neon-a), var(--neon-b), var(--neon-c)) border-box;
+  background-clip: padding-box, border-box; 
+  box-shadow: 
+    0 0 30px rgba(139,60,255,0.3),
+    0 0 60px rgba(0,234,255,0.1),
+    inset 0 0 30px rgba(255,255,255,0.1);
 }
 
 .avatar-box:hover {
@@ -80,15 +89,6 @@ body{
   object-fit:cover; 
   display:block;
   border-radius:50%;
-  border:3px solid transparent;
-  background: linear-gradient(45deg, var(--neon-a), var(--neon-b), var(--neon-c)) border-box;
-  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  box-shadow: 
-    0 0 30px rgba(139,60,255,0.3),
-    0 0 60px rgba(0,234,255,0.1),
-    inset 0 0 30px rgba(255,255,255,0.1);
   transition: all 0.3s ease;
 }
 
@@ -113,6 +113,7 @@ body{
   margin-bottom:10px; 
   background: linear-gradient(135deg, var(--neon-a), var(--neon-b));
   -webkit-background-clip: text;
+  background-clip: text; 
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 30px rgba(139,60,255,0.3);
   position: relative;
@@ -137,6 +138,12 @@ body{
   animation: blink 1s steps(2) infinite;
   text-shadow: 0 0 10px var(--neon-a);
 }
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
 
 .subtitle{ 
   font-size:1.1rem; 
@@ -347,7 +354,7 @@ body{
   align-items:center; 
   gap:12px;
   min-height:100px;
-  color:var(--neon-a);
+  color:var(--neon-a); /* Cor Neon Padrão */
   backdrop-filter: blur(10px);
   position: relative;
   overflow: hidden;
@@ -395,6 +402,9 @@ body{
   margin:0 auto; 
   color:var(--neon-a); 
   transition: all 0.3s ease;
+  /* Garante que o ícone tenha a cor definida pelo .social-card ou aqui */
+  -webkit-text-fill-color: initial; 
+  color: inherit; 
 }
 
 .social-card:hover .icon {
@@ -434,25 +444,34 @@ body{
   filter: drop-shadow(0 0 10px rgba(0,234,255,0.6));
 }
 
-/* Instagram Especial */
+/* Instagram Especial (Corrigido) */
 .social-card.instagram{
+  /* Volta ao fundo de vidro, sem cores fortes ou animação */
   border:1px solid rgba(255,255,255,0.1);
-  background: linear-gradient(135deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D, #F56040, #F77737, #FCAF45, #FFDC80);
-  background-size: 400% 400%;
-  color:#fff;
-  animation: instaPulse 8s ease infinite;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)); 
+  color: var(--neon-a); /* Cor padrão neon para o card */
+  animation: none; 
+  
+  /* Mantém um brilho sutil para quebrar o monocromático, mas mais discreto */
+  box-shadow: 
+    0 0 10px rgba(139,60,255,0.3);
+  
+  transition: all 0.3s ease;
+}
+
+.social-card.instagram:hover{
+    transform:translateY(-6px) scale(1.05); 
+    box-shadow: 
+        0 15px 30px rgba(0,0,0,0.5),
+        0 0 20px rgba(0,234,255,0.4);
 }
 
 .social-card.instagram .icon{ 
-  color:#fff !important; 
-  filter: drop-shadow(0 0 15px rgba(255,255,255,0.5));
+  /* Volta ao padrão, usando a cor do card (.social-card) */
+  color: inherit;
+  filter: drop-shadow(0 0 8px rgba(0,234,255,0.6));
 }
 
-@keyframes instaPulse{ 
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
 
 /* ===========================
    RECADOS MELHORADO
@@ -485,9 +504,24 @@ body{
   margin: 0 auto;
 }
 
+.input-group {
+    position: relative;
+    width: 100%;
+}
+
+.input-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+}
+
 .recado-form input, .recado-form textarea{
   width:100%; 
   padding:14px 16px; 
+  padding-right: 40px; /* Adicionado para o ícone */
   border-radius:12px;
   background: rgba(255,255,255,0.05);
   border:1px solid rgba(139,60,255,0.2);
@@ -496,6 +530,10 @@ body{
   font-size: 1rem;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
+}
+
+.recado-form textarea{
+    padding-right: 40px; 
 }
 
 .recado-form input:focus, .recado-form textarea:focus{
@@ -545,12 +583,34 @@ body{
   box-shadow: 0 12px 25px rgba(0,234,255,0.3);
 }
 
-.feedback-msg{ 
-  margin-top:15px; 
-  color: var(--success); 
-  text-shadow:0 0 10px rgba(112,255,172,0.3); 
-  display:none;
-  font-weight: 600;
+/* Área de recados dinâmica */
+.recados-stats {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.recados-stats .stats-item {
+    font-weight: 600;
+    color: var(--neon-a);
+}
+
+
+.recado-vazio {
+    padding: 30px;
+    border: 1px dashed rgba(255,255,255,0.1);
+    border-radius: 10px;
+    margin-top: 20px;
+    color: var(--muted);
+    font-style: italic;
+}
+.recado-vazio span {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 10px;
 }
 
 /* Lista de Recados */
@@ -583,7 +643,7 @@ body{
   font-size: 1.1rem;
 }
 
-.recado-item .data {
+.recado-item .recado-data {
   color: var(--muted);
   font-size: 0.8rem;
   margin-left: 8px;
@@ -593,6 +653,85 @@ body{
   color: var(--muted);
   margin-top: 8px;
   line-height: 1.5;
+}
+
+.recado-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    justify-content: flex-end;
+}
+
+.recado-actions button {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 5px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: white;
+    transition: all 0.2s ease;
+}
+
+.recado-actions button:hover {
+    background: rgba(139,60,255,0.2);
+    box-shadow: 0 0 10px rgba(139,60,255,0.5);
+}
+
+/* ===========================
+   FOOTER
+=========================== */
+.footer {
+    text-align: center;
+    padding: 30px 20px 10px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 40px;
+}
+
+.footer-content {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.footer-text {
+    font-size: 1rem;
+    color: var(--muted);
+    margin-bottom: 5px;
+}
+
+.footer-text .highlight {
+    color: var(--neon-a);
+    font-weight: 700;
+    text-shadow: 0 0 5px rgba(0,234,255,0.5);
+}
+
+.footer-subtext {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 20px;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.footer-btn {
+    background: linear-gradient(135deg, var(--neon-b), var(--neon-c));
+    color: #000;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.footer-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(139,60,255,0.5);
 }
 
 /* ===========================
@@ -628,7 +767,9 @@ body{
   .header{ padding:30px 16px 15px; }
   .projects h2, .social h2, .recados h2, .xp-section h2{ font-size:1.5rem }
   .project-card, .social-card{ padding:18px; }
-  .recado-form input, .recado-form textarea{ padding:12px; }
+  .recado-form input, .recado-form textarea{ padding:12px; padding-right: 40px; }
+  .footer-links { flex-wrap: wrap; }
+  .footer-btn { margin-bottom: 10px; }
 }
 
 /* Scrollbar Custom */

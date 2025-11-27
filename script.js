@@ -1,6 +1,6 @@
 // ===============================
 // NEON GAMER - script.js
-// Versão Melhorada Completa
+// Versão Melhorada Completa e Otimizada
 // ===============================
 
 // ===============================
@@ -14,10 +14,14 @@ document.addEventListener('DOMContentLoaded', function() {
     initXPAnimation();
     initProjects();
     initSocialCards();
-    initRecadosSystem();
+    initRecadosSystem(); // <--- Função principal revisada
     initKonamiCode();
     initParticleEffects();
     initTypewriterEffect();
+    // Funções utilitárias do footer (não precisam de init)
+    window.scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.toggleSound = () => showNotification('🔈 Sons não implementados, mas a intenção é boa!', 'warning');
+    window.showKonamiHint = () => showNotification('Dica: Cima, Cima, Baixo, Baixo, Esquerda, Direita, Esquerda, Direita, B, A', 'info');
 });
 
 // ===============================
@@ -173,25 +177,83 @@ function initSocialCards() {
 }
 
 // ===============================
-// 6. SISTEMA DE RECADOS COMPLETO
+// 6. SISTEMA DE RECADOS COMPLETO (REVISADO)
 // ===============================
 function initRecadosSystem() {
     const form = document.querySelector('.recado-form');
-    const feedback = document.querySelector('.feedback-msg');
-    const listaRecados = document.querySelector('.lista-recados');
+    const listaRecados = document.getElementById('listaRecados');
     
-    if (!form) return;
-    
-    // Criar área de recados se não existir
-    if (!listaRecados) {
-        const area = document.createElement('div');
-        area.className = 'lista-recados';
-        form.parentNode.insertBefore(area, form.nextSibling);
-    }
+    if (!form || !listaRecados) return;
     
     // Carregar recados existentes
     let recados = JSON.parse(localStorage.getItem('recados')) || [];
     renderRecados();
+    
+    // FUNÇÃO INTERNA: Renderizar Recados
+    function renderRecados() {
+        if (recados.length === 0) {
+            listaRecados.innerHTML = `
+                <div class="recado-vazio">
+                    <span>📝</span>
+                    <p>Nenhum recado ainda. Seja o primeiro a comentar!</p>
+                </div>
+            `;
+            // Atualiza o contador (opcional)
+            document.getElementById('totalRecados').textContent = '0 recados';
+            return;
+        }
+        
+        // Atualiza o contador de recados
+        document.getElementById('totalRecados').textContent = `${recados.length} recados`;
+        
+        listaRecados.innerHTML = recados.map(recado => `
+            <div class="recado-item" data-id="${recado.id}">
+                <div class="recado-header">
+                    <strong>${escapeHTML(recado.nome)}</strong>
+                    <span class="recado-data">${recado.data}</span>
+                </div>
+                <p class="recado-texto">${escapeHTML(recado.texto)}</p>
+                <div class="recado-actions">
+                    <button class="like-btn" data-action="like">
+                        ❤️ <span class="like-count">${recado.likes}</span>
+                    </button>
+                    <button class="delete-btn" data-action="delete">
+                        🗑️
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    // FUNÇÃO INTERNA: Lógica do Like (Otimizada para não renderizar a lista inteira)
+    function handleLike(id, buttonElement) {
+        let updatedRecado;
+        recados = recados.map(recado => {
+            if (recado.id === id) {
+                updatedRecado = { ...recado, likes: recado.likes + 1 };
+                return updatedRecado;
+            }
+            return recado;
+        });
+        localStorage.setItem('recados', JSON.stringify(recados));
+        
+        // Atualiza a contagem do like no DOM diretamente
+        const countSpan = buttonElement.querySelector('.like-count');
+        if (countSpan && updatedRecado) {
+            countSpan.textContent = updatedRecado.likes;
+        }
+        createParticles(buttonElement, 5);
+    }
+    
+    // FUNÇÃO INTERNA: Lógica do Delete
+    function handleDelete(id) {
+        if (!confirm('Tem certeza que deseja excluir este recado?')) return;
+        
+        recados = recados.filter(recado => recado.id !== id);
+        localStorage.setItem('recados', JSON.stringify(recados));
+        renderRecados(); // Renderiza tudo novamente após a exclusão
+        showNotification('🗑️ Recado excluído!', 'info');
+    }
     
     // Configurar formulário
     form.addEventListener('submit', function(e) {
@@ -219,7 +281,7 @@ function initRecadosSystem() {
             id: Date.now(),
             nome: nome,
             texto: texto,
-            data: new Date().toLocaleString('pt-BR'),
+            data: new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
             likes: 0
         };
         
@@ -239,7 +301,25 @@ function initRecadosSystem() {
         nomeInput.focus();
     });
     
-    // Efeitos nos inputs
+    // DELEGAÇÃO DE EVENTOS: Trata cliques nos botões Like/Delete
+    listaRecados.addEventListener('click', function(e) {
+        const targetButton = e.target.closest('button[data-action]');
+        if (!targetButton) return;
+
+        const recadoItem = targetButton.closest('.recado-item');
+        if (!recadoItem) return;
+
+        // O ID do recado é lido do atributo data-id do item pai
+        const id = parseInt(recadoItem.dataset.id);
+        
+        if (targetButton.dataset.action === 'like') {
+            handleLike(id, targetButton);
+        } else if (targetButton.dataset.action === 'delete') {
+            handleDelete(id);
+        }
+    });
+
+    // Efeitos nos inputs (mantido, pois é limpo)
     const inputs = form.querySelectorAll('input, textarea');
     inputs.forEach(input => {
         input.addEventListener('focus', function() {
@@ -251,61 +331,6 @@ function initRecadosSystem() {
             this.parentElement.style.transform = 'scale(1)';
         });
     });
-    
-    function renderRecados() {
-        const area = document.querySelector('.lista-recados');
-        if (!area) return;
-        
-        if (recados.length === 0) {
-            area.innerHTML = `
-                <div class="recado-vazio">
-                    <span>📝</span>
-                    <p>Nenhum recado ainda. Seja o primeiro a comentar!</p>
-                </div>
-            `;
-            return;
-        }
-        
-        area.innerHTML = recados.map(recado => `
-            <div class="recado-item" data-id="${recado.id}">
-                <div class="recado-header">
-                    <strong>${escapeHTML(recado.nome)}</strong>
-                    <span class="recado-data">${recado.data}</span>
-                </div>
-                <p class="recado-texto">${escapeHTML(recado.texto)}</p>
-                <div class="recado-actions">
-                    <button class="like-btn" onclick="likeRecado(${recado.id})">
-                        ❤️ <span>${recado.likes}</span>
-                    </button>
-                    <button class="delete-btn" onclick="deleteRecado(${recado.id})">
-                        🗑️
-                    </button>
-                </div>
-            </div>
-        `).join('');
-    }
-    
-    // Expor funções globalmente
-    window.likeRecado = function(id) {
-        recados = recados.map(recado => {
-            if (recado.id === id) {
-                return { ...recado, likes: recado.likes + 1 };
-            }
-            return recado;
-        });
-        localStorage.setItem('recados', JSON.stringify(recados));
-        renderRecados();
-        createParticles(event.target, 5);
-    };
-    
-    window.deleteRecado = function(id) {
-        if (!confirm('Tem certeza que deseja excluir este recado?')) return;
-        
-        recados = recados.filter(recado => recado.id !== id);
-        localStorage.setItem('recados', JSON.stringify(recados));
-        renderRecados();
-        showNotification('🗑️ Recado excluído!', 'info');
-    };
 }
 
 // ===============================
@@ -324,10 +349,11 @@ function initKonamiCode() {
     document.addEventListener('keydown', function(e) {
         if (konamiActive) return;
         
+        // Verifica se a tecla pressionada corresponde à sequência
         if (e.code === konamiSequence[konamiIndex]) {
             konamiIndex++;
             
-            // Feedback visual progressivo
+            // Feedback visual progressivo (leve mudança de cor)
             document.body.style.filter = `hue-rotate(${konamiIndex * 36}deg)`;
             
             if (konamiIndex === konamiSequence.length) {
@@ -335,6 +361,7 @@ function initKonamiCode() {
                 konamiIndex = 0;
             }
         } else {
+            // Sequência quebrada
             konamiIndex = 0;
             document.body.style.filter = 'none';
         }
@@ -351,11 +378,12 @@ function initKonamiCode() {
         showNotification('🎮 Modo Konami Ativado!', 'konami');
         
         // Efeitos sonoros (opcional)
-        playSound('konami');
+        // playSound('konami'); // Comentei o playSound pois o original estava injetando audioContext repetidamente.
         
         // Desativar após 6 segundos
         setTimeout(() => {
             document.body.classList.remove('konami-mode');
+            document.body.style.filter = 'none'; // Reseta o filtro do keydown
             konamiActive = false;
             showNotification('✨ Modo Konami Finalizado!', 'success');
         }, 6000);
@@ -366,7 +394,7 @@ function initKonamiCode() {
 // 8. SISTEMA DE PARTÍCULAS
 // ===============================
 function initParticleEffects() {
-    // CSS dinâmico para partículas
+    // CSS dinâmico para partículas (bom para encapsulamento)
     const style = document.createElement('style');
     style.textContent = `
         .particle {
@@ -391,44 +419,59 @@ function initParticleEffects() {
             }
         }
     `;
-    document.head.appendChild(style);
+    // Evita adicionar o estilo múltiplas vezes
+    if (!document.querySelector('#particle-styles')) {
+        style.id = 'particle-styles';
+        document.head.appendChild(style);
+    }
 }
 
 function createParticles(element, count = 5) {
     const rect = element.getBoundingClientRect();
+    const isBody = element === document.body;
     
     for (let i = 0; i < count; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
         
-        // Posição aleatória dentro do elemento
-        const x = Math.random() * rect.width;
-        const y = Math.random() * rect.height;
+        let x, y;
+        
+        if (isBody) {
+            // Para o body, usa a janela inteira
+            x = Math.random() * window.innerWidth;
+            y = Math.random() * window.innerHeight;
+            particle.style.position = 'fixed'; // Posição fixa para o body
+        } else {
+            // Posição relativa ao elemento
+            x = Math.random() * rect.width;
+            y = Math.random() * rect.height;
+            element.style.position = 'relative'; // Garante que o elemento seja relativo
+        }
         
         // Movimento aleatório
         const tx = (Math.random() - 0.5) * 100;
         const ty = -(Math.random() * 80 + 20);
         
-        // Cor baseada no elemento
+        // Cor baseada no tema
         const colors = ['var(--neon-a)', 'var(--neon-b)', 'var(--neon-c)'];
-        const color = colors[Math.floor(Math.random() * colors.length)];
+        const color = getComputedStyle(document.documentElement).getPropertyValue(colors[Math.floor(Math.random() * colors.length)]);
         
-        particle.style.left = `${x}px`;
-        particle.style.top = `${y}px`;
-        particle.style.background = color;
+        particle.style.left = `${isBody ? x : x}px`;
+        particle.style.top = `${isBody ? y : y}px`;
+        particle.style.background = color || 'white';
         particle.style.setProperty('--tx', `${tx}px`);
         particle.style.setProperty('--ty', `${ty}px`);
         particle.style.animationDelay = `${Math.random() * 0.2}s`;
         
-        element.style.position = 'relative';
-        element.appendChild(particle);
+        // Adiciona ao elemento (ou ao body se for fixed)
+        (isBody ? document.body : element).appendChild(particle);
         
         // Remover após animação
         setTimeout(() => {
             if (particle.parentNode) {
                 particle.parentNode.removeChild(particle);
             }
-        }, 1000);
+        }, 1200);
     }
 }
 
@@ -436,7 +479,53 @@ function createParticles(element, count = 5) {
 // 9. SISTEMA DE NOTIFICAÇÕES
 // ===============================
 function showNotification(message, type = 'info') {
-    // Remover notificação existente
+    // Estilos dinâmicos (injeta apenas uma vez)
+    if (!document.querySelector('#notification-styles')) {
+        const style = document.createElement('style');
+        style.id = 'notification-styles';
+        style.textContent = `
+            .notification {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: rgba(10, 10, 10, 0.85); /* Usa var(--bg) */
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(255,255,255,0.2);
+                border-radius: 12px;
+                padding: 16px 20px;
+                color: white;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                z-index: 10000;
+                transform: translateX(400px);
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            }
+            
+            .notification-success { border-left: 4px solid var(--success); }
+            .notification-error { border-left: 4px solid #ff4444; }
+            .notification-warning { border-left: 4px solid #ffaa00; }
+            .notification-info { border-left: 4px solid var(--neon-a); }
+            .notification-konami { 
+                border-left: 4px solid transparent;
+                background: linear-gradient(135deg, var(--neon-a), var(--neon-b), var(--neon-c));
+                animation: konamiNotification 0.5s ease infinite;
+                color: black;
+            }
+            
+            .notification.show { transform: translateX(0); }
+            
+            @keyframes konamiNotification {
+                0% { filter: hue-rotate(0deg); }
+                100% { filter: hue-rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    // Remover notificação existente (para evitar acúmulo)
     const existing = document.querySelector('.notification');
     if (existing) existing.remove();
     
@@ -446,52 +535,6 @@ function showNotification(message, type = 'info') {
         <span class="notification-icon">${getNotificationIcon(type)}</span>
         <span class="notification-text">${message}</span>
     `;
-    
-    // Estilos dinâmicos
-    const style = document.createElement('style');
-    style.textContent = `
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 12px;
-            padding: 16px 20px;
-            color: white;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            z-index: 10000;
-            transform: translateX(400px);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-        }
-        
-        .notification-success { border-left: 4px solid var(--success); }
-        .notification-error { border-left: 4px solid #ff4444; }
-        .notification-warning { border-left: 4px solid #ffaa00; }
-        .notification-info { border-left: 4px solid var(--neon-a); }
-        .notification-konami { 
-            border-left: 4px solid transparent;
-            background: linear-gradient(135deg, var(--neon-a), var(--neon-b), var(--neon-c));
-            animation: konamiNotification 0.5s ease infinite;
-        }
-        
-        .notification.show { transform: translateX(0); }
-        
-        @keyframes konamiNotification {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(360deg); }
-        }
-    `;
-    
-    if (!document.querySelector('#notification-styles')) {
-        style.id = 'notification-styles';
-        document.head.appendChild(style);
-    }
     
     document.body.appendChild(notification);
     
@@ -523,6 +566,9 @@ function initTypewriterEffect() {
     const subtitle = document.querySelector('.subtitle');
     if (!subtitle) return;
     
+    // Se o texto já estiver visível (pelo CSS), não precisa do efeito
+    // Se você quer que ele digite, o CSS do subtítulo deve começar com opacity: 0;
+    
     const originalText = subtitle.textContent;
     subtitle.textContent = '';
     
@@ -549,7 +595,8 @@ function animateCounter(element, start, end, duration, suffix = '') {
         if (!startTimestamp) startTimestamp = timestamp;
         const progress = Math.min((timestamp - startTimestamp) / duration, 1);
         const value = Math.floor(progress * (end - start) + start);
-        element.textContent = `Level 3 • XP: ${value}${suffix}`;
+        // Mantive Level 3 fixo, como estava no código original
+        element.textContent = `Level 3 • XP: ${value}${suffix}`; 
         
         if (progress < 1) {
             window.requestAnimationFrame(step);
@@ -562,24 +609,13 @@ function animateCounter(element, start, end, duration, suffix = '') {
 // 12. EFEITOS SONOROS (OPCIONAL)
 // ===============================
 function playSound(type) {
-    // Implementação básica - você pode adicionar sons reais depois
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    
-    if (type === 'click') {
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
-        
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
-        
-        oscillator.frequency.value = 800;
-        oscillator.type = 'sine';
-        
-        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-        
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.1);
+    // Nota: O seu código original injetava o AudioContext a cada clique,
+    // o que pode causar erros. Para uma implementação segura, use o método 
+    // do seu HTML (tag <audio>).
+    const audioEl = document.getElementById(type === 'click' ? 'clickSound' : 'konamiSound');
+    if (audioEl) {
+        audioEl.currentTime = 0;
+        audioEl.play().catch(e => console.log("Erro ao tocar áudio:", e));
     }
 }
 
@@ -587,15 +623,21 @@ function playSound(type) {
 // 13. UTILITÁRIOS
 // ===============================
 function escapeHTML(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
+    // Função mais simples e padrão para escapar HTML
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+    return text.replace(/[&<>"']/g, (m) => map[m]);
 }
 
 // ===============================
 // 14. PERFORMANCE E OTIMIZAÇÃO
 // ===============================
-// Debounce para eventos de resize
+// Debounce para eventos de resize (mantido)
 let resizeTimeout;
 window.addEventListener('resize', function() {
     clearTimeout(resizeTimeout);
@@ -604,7 +646,7 @@ window.addEventListener('resize', function() {
     }, 250);
 });
 
-// Intersection Observer para animações sob demanda
+// Intersection Observer para animações sob demanda (mantido)
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
