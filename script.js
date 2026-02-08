@@ -1,5 +1,5 @@
 // ===============================
-// NEON GAMER - script.js CORRIGIDO
+// NEON GAMER - script.js FINAL
 // ===============================
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -19,36 +19,25 @@ document.addEventListener('DOMContentLoaded', function() {
 function initRecadosSystem() {
     const form = document.getElementById('recadoForm');
     const listaRecados = document.getElementById('listaRecados');
-    const totalRecadosEl = document.getElementById('totalRecados');
-    const totalLikesEl = document.getElementById('totalLikes');
-
     if (!form || !listaRecados) return;
     
     let recados = JSON.parse(localStorage.getItem('recados')) || [];
     renderRecados();
 
     function renderRecados() {
-        // Atualiza contadores globais
-        if (totalRecadosEl) totalRecadosEl.textContent = recados.length;
-        if (totalLikesEl) {
-            const likesSoma = recados.reduce((acc, curr) => acc + (curr.likes || 0), 0);
-            totalLikesEl.textContent = likesSoma;
-        }
-
         if (recados.length === 0) {
-            listaRecados.innerHTML = `<div class="recado-vazio"><span>✨</span><p>Nenhum recado ainda.</p></div>`;
+            listaRecados.innerHTML = `<div class="recado-vazio"><p>Nenhum recado ainda.</p></div>`;
+            document.getElementById('totalRecados').textContent = '0 recados';
             return;
         }
-
-        // Gera o HTML que o seu CSS antigo reconhece (.recado-item strong, .recado-item p)
+        document.getElementById('totalRecados').textContent = `${recados.length} recados`;
         listaRecados.innerHTML = recados.map(recado => `
-            <div class="recado-item" style="animation: fadeInUp 0.5s ease both">
-                <strong>${escapeHTML(recado.nome)}</strong>
-                <span class="recado-data">${recado.data}</span>
-                <p>${escapeHTML(recado.texto)}</p>
+            <div class="recado-item" data-id="${recado.id}">
+                <div class="recado-header"><strong>${escapeHTML(recado.nome)}</strong><span>${recado.data}</span></div>
+                <p class="recado-texto">${escapeHTML(recado.texto)}</p>
                 <div class="recado-actions">
-                    <button class="like-btn" data-id="${recado.id}" data-action="like">❤️ <span>${recado.likes || 0}</span></button>
-                    <button class="delete-btn" data-id="${recado.id}" data-action="delete">🗑️</button>
+                    <button class="like-btn" data-action="like">❤️ <span class="like-count">${recado.likes}</span></button>
+                    <button class="delete-btn" data-action="delete">🗑️</button>
                 </div>
             </div>
         `).join('');
@@ -66,7 +55,7 @@ function initRecadosSystem() {
             return;
         }
 
-        if (btnText) btnText.textContent = "Enviando...";
+        btnText.textContent = "Enviando...";
         btn.disabled = true;
 
         fetch(this.action, {
@@ -76,13 +65,7 @@ function initRecadosSystem() {
         })
         .then(response => {
             if (response.ok) {
-                const novo = { 
-                    id: Date.now(), 
-                    nome, 
-                    texto, 
-                    data: new Date().toLocaleDateString('pt-BR'), 
-                    likes: 0 
-                };
+                const novo = { id: Date.now(), nome, texto, data: new Date().toLocaleDateString('pt-BR'), likes: 0 };
                 recados.unshift(novo);
                 localStorage.setItem('recados', JSON.stringify(recados));
                 renderRecados();
@@ -95,7 +78,7 @@ function initRecadosSystem() {
         })
         .catch(() => showNotification('❌ Erro de conexão.', 'error'))
         .finally(() => {
-            if (btnText) btnText.textContent = "Enviar Recado";
+            btnText.textContent = "Enviar Recado";
             btn.disabled = false;
         });
     });
@@ -103,17 +86,13 @@ function initRecadosSystem() {
     listaRecados.addEventListener('click', function(e) {
         const btn = e.target.closest('button');
         if (!btn) return;
-        
-        const id = parseInt(btn.dataset.id);
-        const action = btn.dataset.action;
-
-        if (action === 'like') {
-            recados = recados.map(r => r.id === id ? {...r, likes: (r.likes || 0) + 1} : r);
-        } else if (action === 'delete') {
+        const id = parseInt(btn.closest('.recado-item').dataset.id);
+        if (btn.dataset.action === 'like') {
+            recados = recados.map(r => r.id === id ? {...r, likes: r.likes + 1} : r);
+        } else if (btn.dataset.action === 'delete') {
             if(!confirm("Excluir da sua tela?")) return;
             recados = recados.filter(r => r.id !== id);
         }
-        
         localStorage.setItem('recados', JSON.stringify(recados));
         renderRecados();
     });
@@ -126,14 +105,9 @@ function initAvatarAnimation() {
 }
 
 function initXPAnimation() {
-    const fill = document.getElementById('xpFill');
-    const txt = document.getElementById('xpText');
-    if (fill) {
-        setTimeout(() => { 
-            fill.style.width = '45%'; 
-            animateCounter(txt, 0, 45, 2000, '% XP'); 
-        }, 800);
-    }
+    const fill = document.querySelector('.xp-fill');
+    const txt = document.querySelector('.xp-text');
+    if (fill) setTimeout(() => { fill.style.width = '45%'; animateCounter(txt, 0, 45, 2000, '% XP'); }, 800);
 }
 
 function initProjects() {
@@ -151,27 +125,18 @@ function initKonamiCode() {
     const seq = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
     let i = 0;
     document.addEventListener('keydown', (e) => {
-        if (e.code === seq[i]) { 
-            i++; 
-            if (i === seq.length) { 
-                document.body.classList.add('konami-mode');
-                showNotification('🎮 GOD MODE ATIVADO!', 'success');
-                setTimeout(() => { 
-                    document.body.classList.remove('konami-mode');
-                    i = 0; 
-                }, 10000);
-            }
-        } else { i = 0; }
+        if (e.code === seq[i]) { i++; if (i === seq.length) { 
+            document.body.style.filter = 'hue-rotate(180deg)'; 
+            showNotification('🎮 GOD MODE!', 'konami');
+            setTimeout(() => { document.body.style.filter = ''; i = 0; }, 5000);
+        }} else { i = 0; }
     });
 }
 
 function initParticleEffects() {
-    if (!document.getElementById('particle-style')) {
-        const s = document.createElement('style');
-        s.id = 'particle-style';
-        s.textContent = `.particle { position: absolute; pointer-events: none; width: 4px; height: 4px; border-radius: 50%; animation: pFloat 1s forwards; z-index: 1000; } @keyframes pFloat { 100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; } }`;
-        document.head.appendChild(s);
-    }
+    const s = document.createElement('style');
+    s.textContent = `.particle { position: absolute; pointer-events: none; width: 4px; height: 4px; border-radius: 50%; animation: pFloat 1s forwards; z-index: 1000; } @keyframes pFloat { 100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; } }`;
+    document.head.appendChild(s);
 }
 
 function createParticles(el, count = 5) {
@@ -192,7 +157,7 @@ function createParticles(el, count = 5) {
 function showNotification(msg, type = 'info') {
     const n = document.createElement('div');
     n.className = `notification notification-${type}`;
-    n.style = "position:fixed; top:20px; right:20px; background:#111; color:#fff; padding:15px; border-radius:8px; z-index:9999; border-left:5px solid var(--neon-a); font-family: sans-serif; box-shadow: 0 0 20px rgba(0,0,0,0.5);";
+    n.style = "position:fixed; top:20px; right:20px; background:#111; color:#fff; padding:15px; border-radius:8px; z-index:9999; border-left:5px solid #0ff; font-family: sans-serif;";
     n.innerHTML = msg;
     document.body.appendChild(n);
     setTimeout(() => n.remove(), 3000);
@@ -201,16 +166,9 @@ function showNotification(msg, type = 'info') {
 function initTypewriterEffect() {
     const sub = document.querySelector('.subtitle');
     if (!sub) return;
-    const txt = sub.textContent; 
-    sub.textContent = '';
+    const txt = sub.textContent; sub.textContent = '';
     let i = 0;
-    (function type() { 
-        if (i < txt.length) { 
-            sub.textContent += txt.charAt(i); 
-            i++; 
-            setTimeout(type, 30); 
-        } 
-    })();
+    (function type() { if (i < txt.length) { sub.textContent += txt.charAt(i); i++; setTimeout(type, 30); } })();
 }
 
 function animateCounter(el, start, end, duration, suffix) {
@@ -218,8 +176,7 @@ function animateCounter(el, start, end, duration, suffix) {
     const step = (ts) => {
         if (!startT) startT = ts;
         const progress = Math.min((ts - startT) / duration, 1);
-        const val = Math.floor(progress * (end - start) + start);
-        if(el) el.textContent = `Level 3 • XP: ${val}${suffix}`;
+        if(el) el.textContent = `Level 3 • XP: ${Math.floor(progress * (end - start) + start)}${suffix}`;
         if (progress < 1) window.requestAnimationFrame(step);
     };
     window.requestAnimationFrame(step);
