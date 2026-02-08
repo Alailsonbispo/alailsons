@@ -141,8 +141,25 @@
    <section class="recados" aria-label="Seção de recados"> 
         <h2>Deixe um Recado</h2> 
         <p class="recados-desc">Mande um feedback, sugestão ou apenas diga olá! ✨</p> 
-         
-                <div class="recados-stats"> 
+          
+        <form class="recado-form" id="recadoForm"> 
+            <div class="input-group"> 
+                <input type="text" name="nome" placeholder="Seu nome..." required aria-label="Seu nome" /> 
+                <span class="input-icon">👤</span> 
+            </div> 
+              
+            <div class="input-group"> 
+                <textarea name="mensagem" placeholder="Seu recado... (mínimo 5 caracteres)" required aria-label="Seu recado" minlength="5" maxlength="5000"></textarea> 
+                <span class="input-icon">💬</span> 
+            </div> 
+              
+            <button type="submit" class="submit-btn"> 
+                <span class="btn-text">Enviar Recado</span> 
+                <span class="btn-icon">🚀</span> 
+            </button> 
+        </form> 
+
+        <div class="recados-stats"> 
             <span class="stats-item" id="totalRecados">0 recados</span> 
             <span class="stats-item" id="totalLikes">0 curtidas</span> 
         </div> 
