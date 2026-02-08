@@ -98,7 +98,6 @@ function initRecadosSystem() {
     });
 }
 
-// --- FUNÇÕES DE APOIO ---
 function initAvatarAnimation() {
     const box = document.querySelector('.avatar-box');
     if(box) box.addEventListener('mouseenter', () => createParticles(box, 5));
