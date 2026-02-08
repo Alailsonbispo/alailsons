@@ -1,15 +1,11 @@
 // ===============================
 // NEON GAMER - script.js
-// Versão Melhorada Completa e Otimizada
+// Versão Final com Fetch API (AJAX)
 // ===============================
 
-// ===============================
-// 1. INICIALIZAÇÃO E CONFIGURAÇÃO
-// ===============================
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Alailson.dev - Inicializado com sucesso!');
+    console.log('🚀 Alailson.dev - Sistema carregado com envio AJAX!');
     
-    // Inicializar todos os sistemas
     initAvatarAnimation();
     initXPAnimation();
     initProjects();
@@ -19,94 +15,13 @@ document.addEventListener('DOMContentLoaded', function() {
     initParticleEffects();
     initTypewriterEffect();
 
-    // Funções utilitárias do footer
     window.scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
-    window.toggleSound = () => showNotification('🔈 Sons não implementados, mas a intenção é boa!', 'warning');
-    window.showKonamiHint = () => showNotification('Dica: Cima, Cima, Baixo, Baixo, Esquerda, Direita, Esquerda, Direita, B, A', 'info');
+    window.toggleSound = () => showNotification('🔈 Sons em fase de testes!', 'warning');
+    window.showKonamiHint = () => showNotification('Dica: ↑ ↑ ↓ ↓ ← → ← → B A', 'info');
 });
 
 // ===============================
-// 2. ANIMAÇÃO DO AVATAR
-// ===============================
-function initAvatarAnimation() {
-    const avatar = document.querySelector('.avatar-img');
-    const avatarBox = document.querySelector('.avatar-box');
-    
-    if (!avatarBox) return;
-    
-    avatarBox.addEventListener('mouseenter', function() {
-        this.style.transform = 'scale(1.05) rotate(5deg)';
-        if (avatar) avatar.style.filter = 'brightness(1.3) saturate(1.2)';
-        createParticles(avatarBox, 8);
-    });
-    
-    avatarBox.addEventListener('mouseleave', function() {
-        this.style.transform = 'scale(1) rotate(0deg)';
-        if (avatar) avatar.style.filter = 'brightness(1) saturate(1)';
-    });
-    
-    avatarBox.addEventListener('click', function() {
-        this.style.transform = 'scale(0.95)';
-        setTimeout(() => { this.style.transform = 'scale(1.05)'; }, 150);
-        createParticles(avatarBox, 15);
-        showNotification('✨ Avatar interativo!', 'success');
-    });
-}
-
-// ===============================
-// 3. ANIMAÇÃO DA BARRA DE XP
-// ===============================
-function initXPAnimation() {
-    const xpFill = document.querySelector('.xp-fill');
-    const xpText = document.querySelector('.xp-text');
-    
-    if (!xpFill || !xpText) return;
-    
-    setTimeout(() => {
-        xpFill.style.transition = 'width 2s cubic-bezier(0.4, 0, 0.2, 1)';
-        xpFill.style.width = '45%';
-        animateCounter(xpText, 0, 45, 2000, '% XP');
-    }, 1000);
-}
-
-// ===============================
-// 4. SISTEMA DE PROJETOS
-// ===============================
-function initProjects() {
-    const projectCards = document.querySelectorAll('.project-card');
-    projectCards.forEach((card, index) => {
-        card.style.animationDelay = `${index * 0.1}s`;
-        card.classList.add('fade-in-up');
-        
-        card.addEventListener('click', function(e) {
-            if (e.target.tagName === 'A') return;
-            this.style.transform = 'scale(0.98)';
-            setTimeout(() => { this.style.transform = 'translateY(-8px) scale(1.02)'; }, 150);
-            createParticles(this, 3);
-        });
-    });
-}
-
-// ===============================
-// 5. CARDS SOCIAIS
-// ===============================
-function initSocialCards() {
-    const socialCards = document.querySelectorAll('.social-card:not(.disabled)');
-    socialCards.forEach((card, index) => {
-        card.style.animationDelay = `${0.5 + (index * 0.1)}s`;
-        card.classList.add('fade-in-up');
-        
-        card.addEventListener('click', function() {
-            this.style.transform = 'scale(0.95)';
-            createParticles(this, 8);
-            playSound('click');
-            setTimeout(() => { this.style.transform = 'translateY(-6px) scale(1.05)'; }, 150);
-        });
-    });
-}
-
-// ===============================
-// 6. SISTEMA DE RECADOS (INTEGRADO COM FORMSPREE)
+// SISTEMA DE RECADOS (FETCH API)
 // ===============================
 function initRecadosSystem() {
     const form = document.getElementById('recadoForm');
@@ -136,10 +51,12 @@ function initRecadosSystem() {
         `).join('');
     }
 
-    // ENVIO DE FORMULÁRIO
+    // ENVIO COM FETCH (SEM REDIRECIONAMENTO)
     form.addEventListener('submit', function(e) {
-        // NÃO usamos preventDefault() para permitir que o Formspree envie o e-mail
+        e.preventDefault(); // Impede o redirecionamento para a página do Formspree
         
+        const btn = this.querySelector('.submit-btn');
+        const btnText = btn.querySelector('.btn-text');
         const nomeInput = this.querySelector('input[name="nome"]');
         const textoInput = this.querySelector('textarea[name="mensagem"]');
         
@@ -147,25 +64,50 @@ function initRecadosSystem() {
         const texto = textoInput.value.trim();
 
         if (!nome || !texto) {
-            e.preventDefault();
-            showNotification('⚠️ Preencha os campos!', 'error');
+            showNotification('⚠️ Preencha todos os campos!', 'error');
             return;
         }
 
-        // Salva localmente antes do redirecionamento do Formspree
-        const novoRecado = {
-            id: Date.now(),
-            nome: nome,
-            texto: texto,
-            data: new Date().toLocaleDateString('pt-BR'),
-            likes: 0
-        };
-        
-        recados.unshift(novoRecado);
-        localStorage.setItem('recados', JSON.stringify(recados));
-        
-        showNotification('🚀 Enviando recado...', 'success');
-        // O formulário agora segue para o Formspree
+        // Feedback visual de carregamento
+        btnText.textContent = "Enviando...";
+        btn.disabled = true;
+
+        const data = new FormData(this);
+
+        fetch(this.action, {
+            method: 'POST',
+            body: data,
+            headers: { 'Accept': 'application/json' }
+        })
+        .then(response => {
+            if (response.ok) {
+                // Sucesso: Salva localmente
+                const novoRecado = {
+                    id: Date.now(),
+                    nome: nome,
+                    texto: texto,
+                    data: new Date().toLocaleDateString('pt-BR'),
+                    likes: 0
+                };
+                
+                recados.unshift(novoRecado);
+                localStorage.setItem('recados', JSON.stringify(recados));
+                
+                renderRecados();
+                form.reset();
+                showNotification('🚀 Recado enviado para o meu e-mail!', 'success');
+                createParticles(form, 15);
+            } else {
+                showNotification('❌ Erro no servidor do Formspree.', 'error');
+            }
+        })
+        .catch(() => {
+            showNotification('❌ Erro de conexão. Verifique sua internet.', 'error');
+        })
+        .finally(() => {
+            btnText.textContent = "Enviar Recado";
+            btn.disabled = false;
+        });
     });
 
     // Likes e Deletes
@@ -179,39 +121,64 @@ function initRecadosSystem() {
             localStorage.setItem('recados', JSON.stringify(recados));
             renderRecados();
         } else if (btn.dataset.action === 'delete') {
-            recados = recados.filter(r => r.id !== id);
-            localStorage.setItem('recados', JSON.stringify(recados));
-            renderRecados();
+            if(confirm("Deseja apagar este recado da sua tela?")) {
+                recados = recados.filter(r => r.id !== id);
+                localStorage.setItem('recados', JSON.stringify(recados));
+                renderRecados();
+            }
         }
     });
 }
 
 // ===============================
-// 7. CÓDIGO KONAMI
+// ANIMAÇÕES E EFEITOS (RESTAURADOS)
 // ===============================
-function initKonamiCode() {
-    const sequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
-    let index = 0;
-    document.addEventListener('keydown', (e) => {
-        if (e.code === sequence[index]) {
-            index++;
-            if (index === sequence.length) {
-                activateKonami();
-                index = 0;
-            }
-        } else { index = 0; }
-    });
+function initAvatarAnimation() {
+    const box = document.querySelector('.avatar-box');
+    if (!box) return;
+    box.addEventListener('mouseenter', () => createParticles(box, 5));
+    box.addEventListener('click', () => showNotification('✨ Avatar Level Max!', 'success'));
+}
 
-    function activateKonami() {
-        document.body.classList.add('konami-mode');
-        showNotification('🎮 Modo Konami Ativado!', 'konami');
-        setTimeout(() => document.body.classList.remove('konami-mode'), 5000);
+function initXPAnimation() {
+    const fill = document.querySelector('.xp-fill');
+    const txt = document.querySelector('.xp-text');
+    if (fill && txt) {
+        setTimeout(() => {
+            fill.style.width = '45%';
+            animateCounter(txt, 0, 45, 2000, '% XP');
+        }, 800);
     }
 }
 
-// ===============================
-// 8. PARTÍCULAS E NOTIFICAÇÕES
-// ===============================
+function initProjects() {
+    document.querySelectorAll('.project-card').forEach(card => {
+        card.addEventListener('mouseenter', () => card.style.transform = 'translateY(-10px) scale(1.02)');
+        card.addEventListener('mouseleave', () => card.style.transform = 'translateY(0) scale(1)');
+    });
+}
+
+function initSocialCards() {
+    document.querySelectorAll('.social-card').forEach(card => {
+        card.addEventListener('click', () => playSound('click'));
+    });
+}
+
+function initKonamiCode() {
+    const seq = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'KeyB', 'KeyA'];
+    let i = 0;
+    document.addEventListener('keydown', (e) => {
+        if (e.code === seq[i]) {
+            i++;
+            if (i === seq.length) {
+                document.body.style.filter = 'hue-rotate(180deg) invert(1)';
+                showNotification('🎮 GOD MODE: ON', 'konami');
+                setTimeout(() => { document.body.style.filter = ''; i = 0; }, 5000);
+            }
+        } else { i = 0; }
+    });
+}
+
 function initParticleEffects() {
     const style = document.createElement('style');
     style.textContent = `.particle { position: absolute; pointer-events: none; width: 4px; height: 4px; border-radius: 50%; animation: pFloat 1s ease-out forwards; z-index: 1000; } @keyframes pFloat { 0% { transform: scale(1); opacity: 1; } 100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; } }`;
@@ -223,13 +190,11 @@ function createParticles(el, count = 5) {
     for (let i = 0; i < count; i++) {
         const p = document.createElement('div');
         p.className = 'particle';
-        const tx = (Math.random() - 0.5) * 100;
-        const ty = -(Math.random() * 50 + 20);
         p.style.left = `${Math.random() * rect.width}px`;
         p.style.top = `${Math.random() * rect.height}px`;
         p.style.background = 'var(--neon-a)';
-        p.style.setProperty('--tx', `${tx}px`);
-        p.style.setProperty('--ty', `${ty}px`);
+        p.style.setProperty('--tx', `${(Math.random() - 0.5) * 100}px`);
+        p.style.setProperty('--ty', `${-(Math.random() * 50 + 20)}px`);
         el.appendChild(p);
         setTimeout(() => p.remove(), 1000);
     }
@@ -238,15 +203,12 @@ function createParticles(el, count = 5) {
 function showNotification(msg, type = 'info') {
     const n = document.createElement('div');
     n.className = `notification notification-${type}`;
-    n.style = "position:fixed; top:20px; right:20px; background:#111; color:#fff; padding:15px; border-radius:8px; z-index:9999; border-left:5px solid var(--neon-a); box-shadow: 0 5px 15px rgba(0,0,0,0.5);";
+    n.style = "position:fixed; top:20px; right:20px; background:#111; color:#fff; padding:15px; border-radius:8px; z-index:9999; border-left:5px solid var(--neon-a); font-family: 'Montserrat', sans-serif; font-size: 14px; pointer-events: none;";
     n.innerHTML = msg;
     document.body.appendChild(n);
     setTimeout(() => n.remove(), 3000);
 }
 
-// ===============================
-// 9. OUTROS EFEITOS
-// ===============================
 function initTypewriterEffect() {
     const sub = document.querySelector('.subtitle');
     if (!sub) return;
@@ -254,7 +216,7 @@ function initTypewriterEffect() {
     sub.textContent = '';
     let i = 0;
     (function type() {
-        if (i < txt.length) { sub.textContent += txt.charAt(i); i++; setTimeout(type, 50); }
+        if (i < txt.length) { sub.textContent += txt.charAt(i); i++; setTimeout(type, 30); }
     })();
 }
 
