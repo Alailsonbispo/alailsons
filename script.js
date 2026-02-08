@@ -175,9 +175,8 @@ function initSocialCards() {
         }
     });
 }
-
 // ===============================
-// 6. SISTEMA DE RECADOS COMPLETO (REVISADO COM FORMSPREE)
+// 6. SISTEMA DE RECADOS COMPLETO (SINCRONIZADO COM FORMSPREE)
 // ===============================
 function initRecadosSystem() {
     const form = document.querySelector('.recado-form');
@@ -185,24 +184,16 @@ function initRecadosSystem() {
     
     if (!form || !listaRecados) return;
     
-    // Carregar recados existentes
     let recados = JSON.parse(localStorage.getItem('recados')) || [];
     renderRecados();
     
     function renderRecados() {
         if (recados.length === 0) {
-            listaRecados.innerHTML = `
-                <div class="recado-vazio">
-                    <span>📝</span>
-                    <p>Nenhum recado ainda. Seja o primeiro a comentar!</p>
-                </div>
-            `;
+            listaRecados.innerHTML = `<div class="recado-vazio"><span>📝</span><p>Nenhum recado ainda.</p></div>`;
             document.getElementById('totalRecados').textContent = '0 recados';
             return;
         }
-        
         document.getElementById('totalRecados').textContent = `${recados.length} recados`;
-        
         listaRecados.innerHTML = recados.map(recado => `
             <div class="recado-item" data-id="${recado.id}">
                 <div class="recado-header">
@@ -211,42 +202,14 @@ function initRecadosSystem() {
                 </div>
                 <p class="recado-texto">${escapeHTML(recado.texto)}</p>
                 <div class="recado-actions">
-                    <button class="like-btn" data-action="like">
-                        ❤️ <span class="like-count">${recado.likes}</span>
-                    </button>
-                    <button class="delete-btn" data-action="delete">
-                        🗑️
-                    </button>
+                    <button class="like-btn" data-action="like">❤️ <span class="like-count">${recado.likes}</span></button>
+                    <button class="delete-btn" data-action="delete">🗑️</button>
                 </div>
             </div>
         `).join('');
     }
 
-    // --- Lógica de Like e Delete mantida ---
-    function handleLike(id, buttonElement) {
-        let updatedRecado;
-        recados = recados.map(recado => {
-            if (recado.id === id) {
-                updatedRecado = { ...recado, likes: recado.likes + 1 };
-                return updatedRecado;
-            }
-            return recado;
-        });
-        localStorage.setItem('recados', JSON.stringify(recados));
-        const countSpan = buttonElement.querySelector('.like-count');
-        if (countSpan && updatedRecado) countSpan.textContent = updatedRecado.likes;
-        createParticles(buttonElement, 5);
-    }
-    
-    function handleDelete(id) {
-        if (!confirm('Tem certeza que deseja excluir este recado?')) return;
-        recados = recados.filter(recado => recado.id !== id);
-        localStorage.setItem('recados', JSON.stringify(recados));
-        renderRecados();
-        showNotification('🗑️ Recado excluído!', 'info');
-    }
-    
-    // --- NOVO: ENVIO PARA O FORMSPREE + LOCALSTORAGE ---
+    // Envio Duplo: E-mail (Formspree) + Tela (Local)
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
@@ -257,26 +220,21 @@ function initRecadosSystem() {
         const nome = nomeInput.value.trim();
         const texto = textoInput.value.trim();
         
-        if (!nome || !texto) {
-            showNotification('⚠️ Preencha todos os campos!', 'error');
-            return;
-        }
-
-        // Desativa o botão temporariamente
+        // Bloqueio visual durante o envio
         submitBtn.disabled = true;
-        submitBtn.style.opacity = '0.5';
-        showNotification('⏳ Enviando...', 'info');
+        submitBtn.style.opacity = '0.7';
+        showNotification('⏳ Enviando para o Alailson...', 'info');
 
-        // 1. Enviar para o Formspree via Fetch (AJAX)
         try {
-            const response = await fetch("https://formspree.io/f/SEU_ID_AQUI", {
+            // ENVIO PARA O FORMSPREE
+            const response = await fetch("https://formspree.io/f/mqedkvda", {
                 method: "POST",
                 body: new FormData(form),
                 headers: { 'Accept': 'application/json' }
             });
 
             if (response.ok) {
-                // 2. Se o envio pro e-mail deu certo, salva no LocalStorage para aparecer na tela
+                // SALVAMENTO LOCAL (O que aparece na tela)
                 const novoRecado = {
                     id: Date.now(),
                     nome: nome,
@@ -288,41 +246,41 @@ function initRecadosSystem() {
                 recados.unshift(novoRecado);
                 localStorage.setItem('recados', JSON.stringify(recados));
                 
-                showNotification('🎉 Recado enviado e salvo!', 'success');
-                createParticles(form, 12);
+                showNotification('🚀 Mensagem enviada com sucesso!', 'success');
+                createParticles(form, 15);
                 renderRecados();
                 this.reset();
             } else {
-                showNotification('❌ Erro ao enviar para o servidor.', 'error');
+                showNotification('❌ Falha no servidor do Formspree.', 'error');
             }
         } catch (error) {
-            showNotification('❌ Erro de conexão!', 'error');
+            showNotification('❌ Erro de conexão. Verifique sua internet.', 'error');
         } finally {
             submitBtn.disabled = false;
             submitBtn.style.opacity = '1';
         }
     });
-    
-    // Delegação de eventos
+
+    // Delegar Likes e Deletes (Mantido seu padrão)
     listaRecados.addEventListener('click', function(e) {
         const targetButton = e.target.closest('button[data-action]');
         if (!targetButton) return;
         const recadoItem = targetButton.closest('.recado-item');
-        if (!recadoItem) return;
         const id = parseInt(recadoItem.dataset.id);
-        if (targetButton.dataset.action === 'like') handleLike(id, targetButton);
-        else if (targetButton.dataset.action === 'delete') handleDelete(id);
-    });
-
-    // Efeitos visuais nos inputs
-    form.querySelectorAll('input, textarea').forEach(input => {
-        input.addEventListener('focus', function() {
-            this.parentElement.style.transform = 'scale(1.02)';
-            createParticles(this, 3);
-        });
-        input.addEventListener('blur', function() {
-            this.parentElement.style.transform = 'scale(1)';
-        });
+        
+        if (targetButton.dataset.action === 'like') {
+            recados = recados.map(r => r.id === id ? {...r, likes: r.likes + 1} : r);
+            localStorage.setItem('recados', JSON.stringify(recados));
+            targetButton.querySelector('.like-count').textContent = recados.find(r => r.id === id).likes;
+            createParticles(targetButton, 5);
+        } else if (targetButton.dataset.action === 'delete') {
+            if(confirm('Excluir recado?')) {
+                recados = recados.filter(r => r.id !== id);
+                localStorage.setItem('recados', JSON.stringify(recados));
+                renderRecados();
+                showNotification('🗑️ Recado removido.', 'info');
+            }
+        }
     });
 }
 // ===============================
