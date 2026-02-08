@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Alailson // Dev Player</title>
-
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
@@ -13,21 +12,19 @@
 
     <div class="background"></div>
 
-    <!-- Header -->
     <header class="header">
         <div class="avatar-box">
-            <img src="./assets/avatar.png" alt="Avatar do Alailson" class="avatar-img" />
+            <img src="./assets/avatar.png" 
+                 alt="Avatar do Alailson - Desenvolvedor e Player de Códigos" 
+                 class="avatar-img" />
             <div class="avatar-glow"></div>
         </div>
 
         <h1 class="title">Alailson.dev<span class="cursor">_</span></h1>
-        <p class="subtitle">
-            Estudante de A.D.S e Coder por diversão • Gamer & CLT • Bora Baëa minha PORRA!!!
-        </p>
+        <p class="subtitle">Estudante de A.D.S e Coder por diversão • Gamer & CLT • Bora Baëa minha PORRA!!!</p>
     </header>
 
-    <!-- XP -->
-    <section class="xp-section">
+    <section class="xp-section" aria-label="Progresso de experiência">
         <h2>Minha Evolução</h2>
         <div class="xp-bar">
             <div class="xp-fill" style="width: 45%"></div>
@@ -35,22 +32,19 @@
         <p class="xp-text">Level 3 • XP: 45%</p>
     </section>
 
-    <!-- Projetos -->
-    <section class="projects">
+    <section class="projects" aria-label="Projetos desenvolvidos">
         <h2>Meus Projetos</h2>
 
         <div class="project-grid">
-            <div class="project-card">
+            <div class="project-card" data-project="blog">
                 <div class="project-badge">🚀 Live</div>
                 <h3>Blog Pessoal</h3>
-                <p>Página pessoal com blog e portfólio dinâmico.</p>
-
+                <p>Minha página pessoal atual em construção com blog integrado e portfolio dinâmico.</p>
                 <div class="project-tech">
                     <span class="tech-tag">HTML5</span>
                     <span class="tech-tag">CSS3</span>
                     <span class="tech-tag">JS</span>
                 </div>
-
                 <a href="https://alailsonbispo.github.io/ladingpage/" target="_blank" class="project-link">
                     Ver Projeto
                 </a>
@@ -58,8 +52,7 @@
         </div>
     </section>
 
-    <!-- Social -->
-    <section class="social">
+    <section class="social" aria-label="Redes sociais">
         <h2>Conecte-se Comigo</h2>
 
         <div class="social-links">
@@ -75,38 +68,39 @@
     </section>
 
     <!-- RECADOS -->
-    <section class="recados">
+    <section class="recados" aria-label="Seção de recados">
         <h2>Deixe um Recado</h2>
         <p class="recados-desc">Mande um feedback, sugestão ou apenas diga olá! ✨</p>
-
-        <form
-            class="recado-form"
+        
+        <form 
+            class="recado-form" 
             id="recadoForm"
             action="https://formspree.io/f/mqedkvda"
             method="POST"
         >
             <div class="input-group">
-                <input
-                    type="text"
+                <input 
+                    type="text" 
                     name="nome"
-                    placeholder="Seu nome..."
-                    required
+                    placeholder="Seu nome..." 
+                    required 
+                    aria-label="Seu nome" 
                 />
                 <span class="input-icon">👤</span>
             </div>
-
+            
             <div class="input-group">
-                <textarea
+                <textarea 
                     name="mensagem"
-                    placeholder="Seu recado... (até 1000 caracteres)"
-                    required
+                    placeholder="Seu recado... (até 1000 caracteres)" 
+                    required 
+                    aria-label="Seu recado"
                     minlength="5"
                     maxlength="1000"
                 ></textarea>
                 <span class="input-icon">💬</span>
-                <small class="char-counter" id="charCounter">0 / 1000</small>
             </div>
-
+            
             <button type="submit" class="submit-btn">
                 <span class="btn-text">Enviar Recado</span>
                 <span class="btn-icon">🚀</span>
@@ -118,36 +112,13 @@
             <span class="stats-item" id="totalLikes">0 curtidas</span>
         </div>
 
-        <div class="lista-recados" id="listaRecados"></div>
+        <div class="lista-recados" id="listaRecados" aria-live="polite"></div>
     </section>
 
-    <!-- Footer -->
     <footer class="footer">
-        <p>Desenvolvido por <strong>Alailson Bispo</strong> • 2025</p>
+        <p>Desenvolvido por <span class="highlight">Alailson Bispo</span> • 2025</p>
     </footer>
 
-    <!-- Sons -->
-    <audio id="clickSound" preload="auto">
-        <source src="/assets/click.mp3" type="audio/mpeg">
-    </audio>
-
-    <audio id="konamiSound" preload="auto">
-        <source src="/assets/konami.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- SCRIPT -->
-    <script>
-        const textarea = document.querySelector('textarea[name="mensagem"]');
-        const counter = document.getElementById('charCounter');
-        const maxChars = 1000;
-
-        if (textarea && counter) {
-            textarea.addEventListener('input', () => {
-                counter.textContent = `${textarea.value.length} / ${maxChars}`;
-            });
-        }
-    </script>
-
+    <script src="script.js"></script>
 </body>
 </html>
-
