@@ -177,7 +177,7 @@ function initSocialCards() {
 }
 
 // ===============================
-// 6. SISTEMA DE RECADOS COMPLETO (REVISADO)
+// 6. SISTEMA DE RECADOS COMPLETO (REVISADO COM FORMSPREE)
 // ===============================
 function initRecadosSystem() {
     const form = document.querySelector('.recado-form');
@@ -189,7 +189,6 @@ function initRecadosSystem() {
     let recados = JSON.parse(localStorage.getItem('recados')) || [];
     renderRecados();
     
-    // FUNÇÃO INTERNA: Renderizar Recados
     function renderRecados() {
         if (recados.length === 0) {
             listaRecados.innerHTML = `
@@ -198,12 +197,10 @@ function initRecadosSystem() {
                     <p>Nenhum recado ainda. Seja o primeiro a comentar!</p>
                 </div>
             `;
-            // Atualiza o contador (opcional)
             document.getElementById('totalRecados').textContent = '0 recados';
             return;
         }
         
-        // Atualiza o contador de recados
         document.getElementById('totalRecados').textContent = `${recados.length} recados`;
         
         listaRecados.innerHTML = recados.map(recado => `
@@ -224,8 +221,8 @@ function initRecadosSystem() {
             </div>
         `).join('');
     }
-    
-    // FUNÇÃO INTERNA: Lógica do Like (Otimizada para não renderizar a lista inteira)
+
+    // --- Lógica de Like e Delete mantida ---
     function handleLike(id, buttonElement) {
         let updatedRecado;
         recados = recados.map(recado => {
@@ -236,103 +233,98 @@ function initRecadosSystem() {
             return recado;
         });
         localStorage.setItem('recados', JSON.stringify(recados));
-        
-        // Atualiza a contagem do like no DOM diretamente
         const countSpan = buttonElement.querySelector('.like-count');
-        if (countSpan && updatedRecado) {
-            countSpan.textContent = updatedRecado.likes;
-        }
+        if (countSpan && updatedRecado) countSpan.textContent = updatedRecado.likes;
         createParticles(buttonElement, 5);
     }
     
-    // FUNÇÃO INTERNA: Lógica do Delete
     function handleDelete(id) {
         if (!confirm('Tem certeza que deseja excluir este recado?')) return;
-        
         recados = recados.filter(recado => recado.id !== id);
         localStorage.setItem('recados', JSON.stringify(recados));
-        renderRecados(); // Renderiza tudo novamente após a exclusão
+        renderRecados();
         showNotification('🗑️ Recado excluído!', 'info');
     }
     
-    // Configurar formulário
-    form.addEventListener('submit', function(e) {
+    // --- NOVO: ENVIO PARA O FORMSPREE + LOCALSTORAGE ---
+    form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
-        const nomeInput = this.querySelector('input[type="text"]');
-        const textoInput = this.querySelector('textarea');
+        const nomeInput = this.querySelector('input[name="nome"]');
+        const textoInput = this.querySelector('textarea[name="mensagem"]');
+        const submitBtn = this.querySelector('.submit-btn');
         
         const nome = nomeInput.value.trim();
         const texto = textoInput.value.trim();
         
-        // Validação
         if (!nome || !texto) {
             showNotification('⚠️ Preencha todos os campos!', 'error');
             return;
         }
-        
-        if (texto.length < 5) {
-            showNotification('📝 Recado muito curto!', 'warning');
-            return;
+
+        // Desativa o botão temporariamente
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.5';
+        showNotification('⏳ Enviando...', 'info');
+
+        // 1. Enviar para o Formspree via Fetch (AJAX)
+        try {
+            const response = await fetch("https://formspree.io/f/SEU_ID_AQUI", {
+                method: "POST",
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (response.ok) {
+                // 2. Se o envio pro e-mail deu certo, salva no LocalStorage para aparecer na tela
+                const novoRecado = {
+                    id: Date.now(),
+                    nome: nome,
+                    texto: texto,
+                    data: new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+                    likes: 0
+                };
+                
+                recados.unshift(novoRecado);
+                localStorage.setItem('recados', JSON.stringify(recados));
+                
+                showNotification('🎉 Recado enviado e salvo!', 'success');
+                createParticles(form, 12);
+                renderRecados();
+                this.reset();
+            } else {
+                showNotification('❌ Erro ao enviar para o servidor.', 'error');
+            }
+        } catch (error) {
+            showNotification('❌ Erro de conexão!', 'error');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = '1';
         }
-        
-        // Criar novo recado
-        const novoRecado = {
-            id: Date.now(),
-            nome: nome,
-            texto: texto,
-            data: new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
-            likes: 0
-        };
-        
-        // Adicionar à lista
-        recados.unshift(novoRecado);
-        localStorage.setItem('recados', JSON.stringify(recados));
-        
-        // Feedback visual
-        showNotification('🎉 Recado enviado com sucesso!', 'success');
-        createParticles(form, 12);
-        
-        // Renderizar e limpar
-        renderRecados();
-        this.reset();
-        
-        // Focar no nome para novo recado
-        nomeInput.focus();
     });
     
-    // DELEGAÇÃO DE EVENTOS: Trata cliques nos botões Like/Delete
+    // Delegação de eventos
     listaRecados.addEventListener('click', function(e) {
         const targetButton = e.target.closest('button[data-action]');
         if (!targetButton) return;
-
         const recadoItem = targetButton.closest('.recado-item');
         if (!recadoItem) return;
-
-        // O ID do recado é lido do atributo data-id do item pai
         const id = parseInt(recadoItem.dataset.id);
-        
-        if (targetButton.dataset.action === 'like') {
-            handleLike(id, targetButton);
-        } else if (targetButton.dataset.action === 'delete') {
-            handleDelete(id);
-        }
+        if (targetButton.dataset.action === 'like') handleLike(id, targetButton);
+        else if (targetButton.dataset.action === 'delete') handleDelete(id);
     });
 
-    // Efeitos nos inputs (mantido, pois é limpo)
-    const inputs = form.querySelectorAll('input, textarea');
-    inputs.forEach(input => {
+    // Efeitos visuais nos inputs
+    form.querySelectorAll('input, textarea').forEach(input => {
         input.addEventListener('focus', function() {
             this.parentElement.style.transform = 'scale(1.02)';
             createParticles(this, 3);
         });
-        
         input.addEventListener('blur', function() {
             this.parentElement.style.transform = 'scale(1)';
         });
     });
 }
-
 // ===============================
 // 7. CÓDIGO KONAMI MELHORADO
 // ===============================
