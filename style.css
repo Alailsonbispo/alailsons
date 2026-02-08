@@ -32,7 +32,7 @@ body {
 }
 
 /* ===========================
-   BACKGROUND ANIMADO
+   BACKGROUND MELHORADO
 =========================== */
 .background {
   position: fixed; inset: 0; z-index: -2;
@@ -155,10 +155,8 @@ body {
 
 @keyframes socialShine { 0%, 100% { transform: translateX(-100%); } 50% { transform: translateX(100%); } }
 
-.social-card .icon { width: 42px; height: 42px; filter: drop-shadow(0 0 10px rgba(0,234,255,0.6)); }
-
 /* ===========================
-   SISTEMA DE RECADOS (AJUSTADO)
+   SISTEMA DE RECADOS (AJUSTADO PARA MENSAGENS LONGAS)
 =========================== */
 .recados { 
   width: 92%; max-width: 680px; margin: 40px auto; text-align: center; padding: 30px 20px;
@@ -172,7 +170,7 @@ body {
   border: 1px solid rgba(139,60,255,0.2); color: #fff; font-size: 1rem; transition: 0.3s;
 }
 
-.recado-form textarea { min-height: 120px; resize: vertical; } /* Permite expandir altura */
+.recado-form textarea { min-height: 120px; resize: vertical; }
 
 .recado-form input:focus, .recado-form textarea:focus { border-color: var(--neon-a); box-shadow: 0 0 15px rgba(0,234,255,0.2); }
 
@@ -181,33 +179,36 @@ body {
   background: linear-gradient(135deg, var(--neon-a), var(--neon-b)); color: #000; font-weight: 700;
 }
 
-/* Lista de Recados e Mensagens Longas */
+/* Lista de Recados e Itens Dinâmicos */
 .recado-item {
   background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
   border-radius: 12px; padding: 16px; margin-bottom: 12px; text-align: left; transition: 0.3s;
+  backdrop-filter: blur(10px);
 }
 
-.recado-item strong { color: var(--neon-a); font-size: 1.1rem; }
+.recado-item strong { color: var(--neon-a); font-size: 1.1rem; display: inline-block; margin-bottom: 4px; }
 
-/* AJUSTE PARA TEXTO LONGO: */
+.recado-item .recado-data { color: var(--muted); font-size: 0.8rem; margin-left: 10px; }
+
+/* AJUSTE PARA TEXTO LONGO (O segredo da sincronia): */
 .recado-item p {
   color: var(--muted);
   margin-top: 8px;
   line-height: 1.5;
-  word-wrap: break-word;       /* Quebra palavras grandes */
+  word-wrap: break-word;       /* Quebra palavras muito longas */
   overflow-wrap: break-word;
-  white-space: pre-wrap;      /* Mantém parágrafos (Enter) */
-  max-height: 400px;          /* Limita altura do card */
-  overflow-y: auto;           /* Scroll interno se for gigante */
+  white-space: pre-wrap;      /* Mantém os "Enters" do usuário */
+  max-height: 350px;          /* Limita a altura para não quebrar o layout */
+  overflow-y: auto;           /* Cria scroll interno se passar da altura */
   padding-right: 8px;
 }
 
-/* Scrollbar Custom para o texto longo */
+/* Scrollbar interna do recado */
 .recado-item p::-webkit-scrollbar { width: 4px; }
 .recado-item p::-webkit-scrollbar-thumb { background: var(--neon-b); border-radius: 10px; }
 
 /* ===========================
-   FOOTER
+   FOOTER & MISC
 =========================== */
 .footer { text-align: center; padding: 30px; border-top: 1px solid rgba(255,255,255,0.1); margin-top: 40px; }
 
@@ -216,10 +217,24 @@ body {
   color: #000; border: none; padding: 8px 15px; border-radius: 8px; font-weight: 600; cursor: pointer;
 }
 
-/* Scrollbar Custom para o site */
+.konami-mode { animation: konamiColors 0.5s ease infinite; }
+
+@keyframes konamiColors {
+  0% { filter: hue-rotate(0deg) brightness(1.2); }
+  100% { filter: hue-rotate(360deg) brightness(1.2); }
+}
+
+/* Scrollbar do Site */
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: linear-gradient(var(--neon-a), var(--neon-b)); border-radius: 4px; }
+
+/* Animações de entrada */
+.fade-in-up { animation: fadeInUp 0.6s ease both; }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 /* Responsividade */
 @media (max-width: 768px) {
