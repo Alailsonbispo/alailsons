@@ -138,36 +138,34 @@
     </section>
 
     <!-- Recados -->
-    <section class="recados" aria-label="Seção de recados">
-        <h2>Deixe um Recado</h2>
-        <p class="recados-desc">Mande um feedback, sugestão ou apenas diga olá! ✨</p>
-        
-        <form class="recado-form" id="recadoForm">
-            <div class="input-group">
-                <input type="text" placeholder="Seu nome..." required aria-label="Seu nome" />
-                <span class="input-icon">👤</span>
-            </div>
-            
-            <div class="input-group">
-                <textarea placeholder="Seu recado... (mínimo 5 caracteres)" required aria-label="Seu recado" minlength="5"></textarea>
-                <span class="input-icon">💬</span>
-            </div>
-            
-            <button type="submit" class="submit-btn">
-                <span class="btn-text">Enviar Recado</span>
-                <span class="btn-icon">🚀</span>
-            </button>
-        </form>
+   <section class="recados" aria-label="Seção de recados"> 
+        <h2>Deixe um Recado</h2> 
+        <p class="recados-desc">Mande um feedback, sugestão ou apenas diga olá! ✨</p> 
+         
+        <form class="recado-form" id="recadoForm" action="https://formspree.io/f/SE_ID_AQUI" method="POST"> 
+            <div class="input-group"> 
+                <input type="text" name="nome" placeholder="Seu nome..." required aria-label="Seu nome" /> 
+                <span class="input-icon">👤</span> 
+            </div> 
+             
+            <div class="input-group"> 
+                <textarea name="mensagem" placeholder="Seu recado... (mínimo 5 caracteres)" required aria-label="Seu recado" minlength="5" maxlength="5000"></textarea> 
+                <span class="input-icon">💬</span> 
+            </div> 
+             
+            <button type="submit" class="submit-btn"> 
+                <span class="btn-text">Enviar Recado</span> 
+                <span class="btn-icon">🚀</span> 
+            </button> 
+        </form> 
 
-        <!-- Área de recados dinâmica -->
-        <div class="recados-stats">
-            <span class="stats-item" id="totalRecados">0 recados</span>
-            <span class="stats-item" id="totalLikes">0 curtidas</span>
-        </div>
+        <div class="recados-stats"> 
+            <span class="stats-item" id="totalRecados">0 recados</span> 
+            <span class="stats-item" id="totalLikes">0 curtidas</span> 
+        </div> 
 
-        <div class="lista-recados" id="listaRecados" aria-live="polite">
-            <!-- Recados serão carregados aqui via JavaScript -->
-        </div>
+        <div class="lista-recados" id="listaRecados" aria-live="polite"> 
+            </div> 
     </section>
 
     <!-- Footer -->
