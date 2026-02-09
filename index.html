@@ -3,202 +3,92 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Alailson // Dev Player</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
+    <title>Alailson Bispo // Software Developer</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap">
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
 </head>
 <body>
 
-    <!-- Background Animado -->
     <div class="background"></div>
 
-    <!-- Header -->
     <header class="header">
         <div class="avatar-box">
-            <img src="./assets/avatar.png" 
-                 alt="Avatar do Alailson - Desenvolvedor e Player de Códigos" 
-                 class="avatar-img" />
-            <div class="avatar-glow"></div>
+            <img src="./assets/avatar.png" alt="Alailson Bispo" class="avatar-img" />
         </div>
-
-        <h1 class="title">Alailson.dev<span class="cursor">_</span></h1>
-        <p class="subtitle">Estudante de A.D.S e Coder por diversão • Gamer & CLT • Bora Baëa minha PORRA!!!</p>
+        <h1 class="title">alailson.dev<span class="cursor">_</span></h1>
+        <p class="subtitle"><strong>Desenvolvedor Java Back-end em formação</strong><br>Graduando em ADS • Salvador, BA</p>
+        
+        <div class="header-actions">
+            <a href="https://www.linkedin.com/in/alailson-bispo-b645663ab/" target="_blank" class="btn-primary">LinkedIn</a>
+            <a href="#recados" class="btn-secondary">Deixar Recado</a>
+        </div>
     </header>
 
-    <!-- Barra de XP -->
-    <section class="xp-section" aria-label="Progresso de experiência">
-        <h2>Minha Evolução</h2>
+    <section class="xp-section">
+        <h2>Evolução Técnica</h2>
         <div class="xp-bar">
-            <div class="xp-fill" style="width: 45%"></div>
+            <div class="xp-fill"></div>
         </div>
-        <p class="xp-text">Level 3 • XP: 45%</p>
+        <p class="xp-text">Carregando progresso...</p>
     </section>
 
-    <!-- Projetos -->
-    <section class="projects" aria-label="Projetos desenvolvidos">
-        <h2>Meus Projetos</h2>
-
+    <section class="projects">
+        <h2>Projetos em Destaque</h2>
         <div class="project-grid">
-
-            <div class="project-card" data-project="blog">
-                <div class="project-badge">🚀 Live</div>
-                <h3>Blog Pessoal</h3>
-                <p>Minha página pessoal atual em construção com blog integrado e portfolio dinâmico.</p>
+            
+            <div class="project-card">
+                <div class="project-badge">LIVE</div>
+                <h3>Blog Pessoal & Portfolio</h3>
+                <p>Interface interativa explorando manipulação de DOM e eventos assíncronos com JavaScript.</p>
                 <div class="project-tech">
                     <span class="tech-tag">HTML5</span>
                     <span class="tech-tag">CSS3</span>
-                    <span class="tech-tag">JS</span>
+                    <span class="tech-tag">JavaScript</span>
                 </div>
-                <a href="https://alailsonbispo.github.io/ladingpage/" target="_blank" rel="noopener" class="project-link">
-                    Ver Projeto
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                        <polyline points="15 3 21 3 21 9"></polyline>
-                        <line x1="10" y1="14" x2="21" y2="3"></line>
-                    </svg>
-                </a>
+                <a href="https://alailsonbispo.github.io/ladingpage/" target="_blank" class="project-link">Ver Código →</a>
             </div>
 
-            <div class="project-card" data-project="portfolio">
-                <div class="project-badge coming-soon">🔜 Em Breve</div>
-                <h3>Portfolio Avançado</h3>
-                <p>Coleção das minhas primeiras criações e experimentos em desenvolvimento web.</p>
+            <div class="project-card">
+                <div class="project-badge focus">FOCO</div>
+                <h3>API RESTful com Spring Boot</h3>
+                <p>Desenvolvimento de microsserviços, persistência em banco de dados SQL e arquitetura limpa.</p>
                 <div class="project-tech">
-                    <span class="tech-tag">Breve</span>
-                    <span class="tech-tag">Breve</span>
-                    <span class="tech-tag">Breve</span>
+                    <span class="tech-tag">Java</span>
+                    <span class="tech-tag">Spring</span>
+                    <span class="tech-tag">PostgreSQL</span>
                 </div>
-                <a href="#" class="project-link disabled" aria-disabled="true">
-                    Em breve
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M12 6v6l4 2"></path>
-                    </svg>
-                </a>
-            </div>
-
-            <div class="project-card" data-project="surpresa">
-                <div class="project-badge coming-soon">🎁 Surpresa</div>
-                <h3>Projeto Secreto</h3>
-                <p>Projeto inovador em desenvolvimento. Aguarde novidades em breve! 📦✨</p>
-                <div class="project-tech">
-                    <span class="tech-tag">Breve</span>
-                    <span class="tech-tag">Breve</span>
-                    <span class="tech-tag">Breve</span>
-                </div>
-                <a href="#" class="project-link disabled" aria-disabled="true">
-                    Em breve
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path d="M12 6v6l4 2"></path>
-                    </svg>
-                </a>
+                <a href="https://github.com/Alailsonbispo" target="_blank" class="project-link">GitHub →</a>
             </div>
 
         </div>
     </section>
 
-    <!-- Social -->
-    <section class="social" aria-label="Redes sociais">
-        <h2>Conecte-se Comigo</h2>
-
+    <section class="social">
+        <h2>Conexões</h2>
         <div class="social-links">
-
-            <!-- GitHub -->
-            <a href="https://github.com/Alailsonbispo" target="_blank" rel="noopener" class="social-card github" aria-label="GitHub do Alailson">
-                <svg class="icon github-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-                    <path d="M9 19c-4.5 1.5-4.5-2.5-6-3m12 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 18 4.77 5.07 5.07 0 0 0 17.91 1S16.73.65 13 2.48a13.38 13.38 0 0 0-8 0C1.27.65 0 1 0 1a5.07 5.07 0 0 0-.09 3.77A5.44 5.44 0 0 0 0 10.5c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 5.5 21.13V25"></path>
-                </svg>
-                <span>GitHub</span>
-                <span class="social-stats">20+ repos</span>
-            </a>
-
-            <!-- Instagram -->
-            <a href="https://www.instagram.com/alailsonsb" target="_blank" rel="noopener" class="social-card instagram" aria-label="Instagram do Alailson">
-                <svg class="icon insta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-                    <rect x="2" y="2" width="20" height="20" rx="5"></rect>
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                </svg>
-                <span>Instagram</span>
-            </a>
-
-            <!-- LinkedIn -->
-            <a href="https://www.linkedin.com/in/alailson-bispo-b645663ab/" class="social-card linkedin" aria-label="LinkedIn" aria-disabled="true">
-                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
-                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                    <rect x="2" y="9" width="4" height="12"></rect>
-                    <circle cx="4" cy="4" r="2"></circle>
-                </svg>
-                <span>LinkedIn</span>
-                <span class="social-stats">Em breve</span>
-            </a>
-
-
+            <a href="https://github.com/Alailsonbispo" target="_blank" class="social-card">GitHub</a>
+            <a href="https://www.instagram.com/alailsonsb" target="_blank" class="social-card">Instagram</a>
         </div>
     </section>
 
-    <!-- Recados -->
-   <section class="recados" aria-label="Seção de recados"> 
-        <h2>Deixe um Recado</h2> 
-        <p class="recados-desc">Mande um feedback, sugestão ou apenas diga olá! ✨</p> 
-          
+    <section class="recados" id="recados"> 
+        <h2>Deixe seu Feedback</h2> 
         <form class="recado-form" id="recadoForm"> 
-            <div class="input-group"> 
-                <input type="text" name="nome" placeholder="Seu nome..." required aria-label="Seu nome" /> 
-                <span class="input-icon">👤</span> 
-            </div> 
-              
-            <div class="input-group"> 
-                <textarea name="mensagem" placeholder="Seu recado..." required aria-label="Seu recado" minlength="5" maxlength="5000"></textarea> 
-                <span class="input-icon">💬</span> 
-            </div> 
-              
-            <button type="submit" class="submit-btn"> 
-                <span class="btn-text">Enviar Recado</span> 
-                <span class="btn-icon">🚀</span> 
-            </button> 
+            <input type="text" name="nome" placeholder="Seu nome..." required /> 
+            <textarea name="mensagem" placeholder="Sua mensagem..." required></textarea> 
+            <button type="submit" class="submit-btn">Enviar Mensagem</button> 
         </form> 
-
-        <div class="recados-stats"> 
-            <span class="stats-item" id="totalRecados">0 recados</span> 
-            <span class="stats-item" id="totalLikes">0 curtidas</span> 
-        </div> 
-
-        <div class="lista-recados" id="listaRecados" aria-live="polite"> 
-            </div> 
+        <div id="listaRecados" class="lista-recados"></div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer" role="contentinfo">
-        <div class="footer-content">
-            <p class="footer-text">
-                Desenvolvido por 
-                <span class="highlight">Alailson Bispo</span>
-            </p>
-            <p class="footer-subtext">
-                🎮 Player de códigos • 🚀 Em constante evolução • ⚡ 2025
-            </p>
-            <div class="footer-links">
-                <button class="footer-btn" onclick="scrollToTop()" aria-label="Voltar ao topo">
-                    ↑ Topo
-                </button>
-                <button class="footer-btn" onclick="toggleSound()" aria-label="Alternar sons">
-                    🔈 Sons
-                </button>
-                <button class="footer-btn konami-hint" onclick="showKonamiHint()" aria-label="Dica do Easter Egg">
-                    🎮 Easter Egg
-                </button>
-            </div>
+    <footer class="footer">
+        <p>Desenvolvido por <span class="highlight">Alailson Bispo</span> • 2026</p>
+        <div class="footer-links">
+            <button onclick="scrollToTop()" class="footer-btn">↑ Topo</button>
+            <button onclick="showKonamiHint()" class="footer-btn">🎮 Hint</button>
         </div>
     </footer>
-
-    <!-- Efeitos Sonoros (Ocultos) -->
-    <audio id="clickSound" preload="auto">
-        <source src="/assets/click.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="konamiSound" preload="auto">
-        <source src="/assets/konami.mp3" type="audio/mpeg">
-    </audio>
 
     <script src="script.js"></script>
 </body>
