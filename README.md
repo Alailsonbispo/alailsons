@@ -1,4 +1,4 @@
-# alailsons
+#
 
 Projeto web simples desenvolvido com **HTML, CSS e JavaScript**, criado  como experimento front-end e base para estudos em desenvolvimento web.
 
