@@ -1,6 +1,6 @@
 # alailsons
 
-Projeto web simples desenvolvido com **HTML, CSS e JavaScript**, criado por **Alailson Bispo** como experimento front-end e base para estudos em desenvolvimento web.
+Projeto web simples desenvolvido com **HTML, CSS e JavaScript**, criado  como experimento front-end e base para estudos em desenvolvimento web.
 
 ## 🧠 Sobre o projeto
 
