@@ -58,7 +58,7 @@
         
         <p class="subtitle" id="typewriter-text">
             <strong>Profissional com +9 anos de experiência em operações de alta complexidade | Transição de carreira para Desenvolvedor Backend/Frontend | Cursando ADS | Salvador-BA</strong><br>
-        
+            Apaixonado por construir sistemas robustos, interfaces intuitivas e código de qualidade.
         </p>
         
         <div class="header-actions">
@@ -69,10 +69,11 @@
                aria-label="Visitar perfil no LinkedIn">
                 LinkedIn
             </a>
-            <a href="#curriculo" 
+            <a href="./assets/curriculo-alailson.pdf" 
+               download 
                class="btn-secondary"
-               aria-label="Ver currículo">
-                Ver Currículo
+               aria-label="Baixar currículo">
+                Download CV
             </a>
             <a href="#recados" 
                class="btn-text"
@@ -88,73 +89,6 @@
             <div class="xp-fill"></div>
         </div>
         <p class="xp-text">Carregando progresso...</p>
-    </section>
-
-    <!-- NOVA SEÇÃO: CURRÍCULO INTERATIVO -->
-    <section class="curriculo-section" id="curriculo" aria-labelledby="curriculo-title">
-        <h2 id="curriculo-title">Currículo</h2>
-        
-        <div class="curriculo-card">
-            <div class="curriculo-preview">
-                <div class="pdf-thumbnail">
-                    <span class="pdf-icon">📄</span>
-                    <div class="pdf-pages">
-                        <div class="page-thumb"></div>
-                        <div class="page-thumb"></div>
-                    </div>
-                </div>
-                
-                <div class="curriculo-info">
-                    <h3>Alailson Bispo - Desenvolvedor Java/Spring Boot</h3>
-                    <p class="file-info">
-                        <span class="file-size">📊 PDF • 245 KB</span>
-                        <span class="update-date">🔄 Atualizado em: Fevereiro/2026</span>
-                    </p>
-                    
-                    <div class="skill-tags">
-                        <span class="skill-tag">Java</span>
-                        <span class="skill-tag">Spring Boot</span>
-                        <span class="skill-tag">HTML5</span>
-                        <span class="skill-tag">CSS3</span>
-                        <span class="skill-tag">JavaScript</span>
-                        <span class="skill-tag">PostgreSQL</span>
-                        <span class="skill-tag">Git</span>
-                        <span class="skill-tag">REST APIs</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="curriculo-actions">
-                <button onclick="visualizarCurriculo()" class="btn-view">
-                    👁️ Visualizar
-                </button>
-                <a href="./assets/curriculo-alailson.pdf" 
-                   download 
-                   class="btn-download"
-                   onclick="trackDownload()">
-                    ⬇️ Download PDF
-                </a>
-                <button onclick="copiarLinkCurriculo()" class="btn-share">
-                    🔗 Compartilhar
-                </button>
-            </div>
-        </div>
-        
-        <!-- Estatísticas do currículo -->
-        <div class="curriculo-stats">
-            <div class="stat-item">
-                <span class="stat-value" id="downloadCount">0</span>
-                <span class="stat-label">Downloads</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-value" id="viewCount">0</span>
-                <span class="stat-label">Visualizações</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-value">9+</span>
-                <span class="stat-label">Anos de Exp</span>
-            </div>
-        </div>
     </section>
 
     <section class="projects" aria-labelledby="projects-title">
@@ -271,14 +205,6 @@
             </button>
         </div>
     </footer>
-
-    <!-- Modal de visualização do PDF -->
-    <div id="pdfModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="fecharModal()">&times;</span>
-            <iframe id="pdfViewer" src="" frameborder="0" title="Visualização do Currículo"></iframe>
-        </div>
-    </div>
 
     <!-- Scripts -->
     <script src="script.js" defer></script>
