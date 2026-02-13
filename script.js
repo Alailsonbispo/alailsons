@@ -11,16 +11,16 @@ function initTypewriter() {
     sub.innerHTML = '';
     let i = 0;
     function type() {
-        if (i < text.length) {
+        if (i <= text.length) {
+            sub.innerHTML = text.substring(0, i) + '<span class="cursor">|</span>';
             if (text.charAt(i) === '<') {
-                let end = text.indexOf('>', i);
-                sub.innerHTML += text.substring(i, end + 1);
-                i = end + 1;
+                i = text.indexOf('>', i) + 1;
             } else {
-                sub.innerHTML += text.charAt(i);
                 i++;
             }
             setTimeout(type, 30);
+        } else {
+            sub.innerHTML = text; // Remove cursor at end
         }
     }
     setTimeout(type, 500);
@@ -33,7 +33,10 @@ function initXP() {
         fill.style.width = '45%';
         let count = 0;
         let interval = setInterval(() => {
-            if(count >= 45) clearInterval(interval);
+            if(count >= 45) {
+                count = 45;
+                clearInterval(interval);
+            }
             text.textContent = `ADS 5º Semestre • XP: ${count}% para Formatura`;
             count++;
         }, 30);
@@ -45,11 +48,13 @@ function initRecados() {
     const list = document.getElementById('listaRecados');
     let storage = JSON.parse(localStorage.getItem('recados')) || [];
 
+    const escapeHTML = (str) => str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]));
+
     const render = () => {
         list.innerHTML = storage.map(r => `
             <div style="background:#111; border-left:2px solid #fff; padding:15px; margin-top:15px; border-radius:4px;">
-                <strong>${r.nome}</strong>
-                <p style="color:#999; font-size:0.9rem;">${r.msg}</p>
+                <strong>${escapeHTML(r.nome)}</strong>
+                <p style="color:#999; font-size:0.9rem;">${escapeHTML(r.msg)}</p>
             </div>
         `).join('');
     };
