@@ -1,10 +1,16 @@
 :root {
     --bg: #050505;
+    --bg-light: #f5f5f5;
     --card: #111111;
+    --card-light: #ffffff;
     --text-main: #ffffff;
+    --text-main-light: #333333;
     --text-muted: #cccccc;
+    --text-muted-light: #666666;
     --accent: #ffffff;
+    --accent-light: #000000;
     --border: rgba(255,255,255,0.1);
+    --border-light: rgba(0,0,0,0.1);
     --glass: rgba(255,255,255,0.03);
     --error: #ff4444;
     --success: #00ff88;
@@ -40,6 +46,7 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     min-height: 100vh;
+    transition: background-color var(--transition-normal), color var(--transition-normal);
 }
 
 /* Acessibilidade - foco visível */
@@ -112,6 +119,7 @@ body {
                 border-color var(--transition-normal),
                 transform var(--transition-fast);
     will-change: transform, filter;
+    position: relative;
 }
 
 .avatar-box:hover {
@@ -173,6 +181,8 @@ body {
     font-weight: 600;
     border-radius: 4px;
     transition: all var(--transition-fast);
+    position: relative;
+    overflow: hidden;
 }
 
 .btn-primary {
@@ -212,11 +222,12 @@ body {
     transform: translateY(0) scale(0.98);
 }
 
-/* Seções */
+/* Seções comuns */
 .xp-section, 
 .projects, 
 .social, 
-.recados {
+.recados,
+.curriculo-section {
     max-width: 900px;
     margin: 60px auto;
     padding: 0 20px;
@@ -251,7 +262,217 @@ h2:hover::after {
     opacity: 1;
 }
 
-/* Barra de progresso XP */
+/* ========== SEÇÃO DO CURRÍCULO ========== */
+.curriculo-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 25px;
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+.curriculo-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #fff, #666, #fff);
+    transform: translateX(-100%);
+    animation: slideBorder 3s infinite;
+}
+
+@keyframes slideBorder {
+    100% { transform: translateX(100%); }
+}
+
+.curriculo-preview {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Thumbnail do PDF */
+.pdf-thumbnail {
+    width: 80px;
+    height: 100px;
+    background: #1a1a1a;
+    border-radius: 8px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    transition: transform var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.pdf-thumbnail:hover {
+    transform: scale(1.05);
+}
+
+.pdf-icon {
+    font-size: 2.5rem;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+}
+
+.pdf-pages {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    display: flex;
+    gap: 2px;
+}
+
+.page-thumb {
+    width: 15px;
+    height: 20px;
+    background: #333;
+    border-radius: 2px;
+    border: 1px solid #444;
+}
+
+/* Informações do currículo */
+.curriculo-info {
+    flex: 1;
+}
+
+.curriculo-info h3 {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+    color: var(--text-main);
+}
+
+.file-info {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+}
+
+.file-size, .update-date {
+    color: var(--text-muted);
+    background: rgba(255,255,255,0.05);
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+/* Tags de habilidades */
+.skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.skill-tag {
+    background: rgba(255,255,255,0.1);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: #ccc;
+    border: 1px solid var(--border);
+    transition: all var(--transition-fast);
+}
+
+.skill-tag:hover {
+    background: white;
+    color: black;
+    transform: translateY(-2px);
+}
+
+/* Ações do currículo */
+.curriculo-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+}
+
+.btn-view, .btn-download, .btn-share {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    flex: 1;
+    text-align: center;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.btn-view {
+    background: #2a2a2a;
+    color: white;
+}
+
+.btn-download {
+    background: white;
+    color: black;
+}
+
+.btn-share {
+    background: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--border);
+}
+
+.btn-view:hover, .btn-download:hover, .btn-share:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-view:hover {
+    background: #333;
+}
+
+.btn-download:hover {
+    background: #eee;
+}
+
+.btn-share:hover {
+    border-color: white;
+    background: rgba(255,255,255,0.05);
+}
+
+/* Estatísticas do currículo */
+.curriculo-stats {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    margin-top: 30px;
+    padding: 20px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-value {
+    display: block;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1.2;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ========== BARRA DE PROGRESSO XP ========== */
 .xp-bar {
     background: #1a1a1a;
     height: 10px;
@@ -293,7 +514,7 @@ h2:hover::after {
     color: var(--text-muted);
 }
 
-/* Grid de projetos */
+/* ========== PROJETOS ========== */
 .project-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -395,7 +616,7 @@ h2:hover::after {
     width: 100%;
 }
 
-/* Links sociais */
+/* ========== LINKS SOCIAIS ========== */
 .social-links {
     display: flex;
     justify-content: center;
@@ -422,7 +643,7 @@ h2:hover::after {
     box-shadow: var(--shadow-md);
 }
 
-/* Formulário de recados */
+/* ========== FORMULÁRIO DE RECADOS ========== */
 .recado-form {
     display: flex;
     flex-direction: column;
@@ -600,7 +821,58 @@ textarea.error {
     color: #555;
 }
 
-/* Toast */
+/* ========== MODAL ========== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.95);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: #1a1a1a;
+    width: 90%;
+    max-width: 900px;
+    height: 90vh;
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    border: 1px solid var(--border);
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    color: #999;
+    cursor: pointer;
+    transition: color var(--transition-fast);
+    z-index: 1;
+}
+
+.close-modal:hover {
+    color: white;
+}
+
+#pdfViewer {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    background: white;
+}
+
+/* ========== TOAST ========== */
 .toast {
     position: fixed;
     bottom: 20px;
@@ -637,7 +909,7 @@ textarea.error {
     }
 }
 
-/* Footer */
+/* ========== FOOTER ========== */
 .footer {
     text-align: center;
     padding: 60px 20px;
@@ -663,102 +935,4 @@ textarea.error {
     margin: 0 5px;
     transition: all var(--transition-fast);
     border-radius: 4px;
-    font-size: 0.9rem;
-}
-
-.footer-btn:hover {
-    background: var(--glass);
-    border-color: var(--accent);
-    transform: translateY(-2px);
-}
-
-/* Modo Matrix (easter egg) */
-body.matrix-mode {
-    animation: matrixGlitch 0.1s infinite;
-}
-
-@keyframes matrixGlitch {
-    0% { filter: hue-rotate(0deg) invert(0); }
-    25% { filter: hue-rotate(90deg) invert(1); }
-    50% { filter: hue-rotate(180deg) invert(0); }
-    75% { filter: hue-rotate(270deg) invert(1); }
-    100% { filter: hue-rotate(360deg) invert(0); }
-}
-
-/* Utilitários */
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0,0,0,0);
-    border: 0;
-}
-
-/* Media Queries - Responsividade */
-@media (max-width: 768px) {
-    .title {
-        font-size: 2.5rem;
-    }
-    
-    .header-actions {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
-    
-    .btn-primary, 
-    .btn-secondary {
-        width: 100%;
-        max-width: 250px;
-        text-align: center;
-    }
-    
-    .social-links {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .social-card {
-        width: 100%;
-        max-width: 300px;
-    }
-}
-
-@media (max-width: 600px) {
-    .title {
-        font-size: 2.2rem;
-    }
-    
-    .project-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .xp-section, 
-    .projects, 
-    .social, 
-    .recados {
-        margin: 40px auto;
-    }
-}
-
-@media (max-width: 400px) {
-    .avatar-box {
-        width: 100px;
-        height: 100px;
-    }
-    
-    .title {
-        font-size: 1.8rem;
-    }
-    
-    .subtitle {
-        font-size: 0.9rem;
-    }
-    
-    h2 {
-        font-size: 1rem;
-    }
-}
+    font-size: 
