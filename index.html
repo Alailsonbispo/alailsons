@@ -1,286 +1,164 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- SEO Principal -->
-    <title>Alailson Bispo // Software Developer</title>
-    <meta name="description" content="Portfolio de Alailson Bispo, Desenvolvedor Java/Spring Boot em transição de carreira. 9 anos de experiência em operações complexas.">
-    <meta name="keywords" content="desenvolvedor, Java, Spring Boot, portfolio, backend, frontend, Salvador, currículo">
-    <meta name="author" content="Alailson Bispo">
-    
-    <!-- Open Graph / Social Media -->
-    <meta property="og:title" content="Alailson Bispo - Software Developer">
-    <meta property="og:description" content="Desenvolvedor em transição de carreira com 9+ anos de experiência em operações complexas">
-    <meta property="og:image" content="https://seu-site.com/assets/thumbnail.jpg">
-    <meta property="og:url" content="https://seu-site.com">
-    <meta property="og:type" content="website">
-    
-    <!-- Twitter Cards -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Alailson Bispo - Software Developer">
-    <meta name="twitter:description" content="Desenvolvedor em transição de carreira">
-    <meta name="twitter:image" content="https://seu-site.com/assets/thumbnail.jpg">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
-    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-    
-    <!-- Fonts otimizadas -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
-    
-    <!-- CSS -->
-    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alailson Bispo | Full Stack Júnior</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👨‍💻</text></svg>">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
+        .gradient-text { background: linear-gradient(to right, #60a5fa, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .glass { background: rgba(255, 255, 255, 0.02); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        .bg-mesh { background-image: radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.1) 0, transparent 50%), radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.1) 0, transparent 50%); }
+    </style>
 </head>
-<body>
+<body class="bg-[#0f172a] text-slate-300 font-medium bg-mesh">
 
-    <!-- Background animado -->
-    <div class="background"></div>
-
-    <header class="header">
-        <div class="avatar-box" role="img" aria-label="Foto de perfil de Alailson Bispo">
-            <img 
-                src="./assets/Imagem.jpg" 
-                alt="Alailson Bispo - Desenvolvedor de Software" 
-                class="avatar-img"
-                loading="lazy"
-                width="140"
-                height="140"
-            />
+    <nav class="fixed w-full z-50 glass border-b border-white/5">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <span class="text-xl font-extrabold tracking-tighter text-white uppercase italic">Alailson<span class="text-blue-500">.</span>Dev</span>
+            <div class="hidden md:flex space-x-8 text-[11px] font-bold uppercase tracking-widest">
+                <a href="#home" class="hover:text-blue-400 transition-colors">Sobre</a>
+                <a href="#projetos" class="hover:text-blue-400 transition-colors">Projetos</a>
+                <a href="https://github.com/Alailsonbispo" target="_blank" class="text-blue-400 flex items-center gap-2 border border-blue-500/20 px-3 py-1 rounded-lg hover:bg-blue-500/10 transition-all">
+                    GitHub ➔
+                </a>
+            </div>
         </div>
-        
-        <h1 class="title">
-            alailson.dev<span class="cursor" aria-hidden="true">_</span>
-        </h1>
-        
-        <p class="subtitle" id="typewriter-text">
-            <strong>Profissional com +9 anos de experiência em operações de alta complexidade | Transição de carreira para Desenvolvedor Backend/Frontend | Cursando ADS | Salvador-BA</strong><br>
-            Apaixonado por construir sistemas robustos, interfaces intuitivas e código de qualidade.
+    </nav>
+
+    <section id="home" class="pt-44 pb-24 px-6">
+        <div class="container mx-auto max-w-4xl text-center">
+            <div class="inline-block px-4 py-1 mb-6 text-[10px] font-black tracking-[0.3em] uppercase bg-blue-500/10 text-blue-400 rounded-full border border-blue-500/20">
+                Disponível para a primeira oportunidade
+            </div>
+            <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-8 tracking-tight leading-[1.1]">
+                Transformando código em <br>
+                <span class="gradient-text italic">valor real.</span>
+            </h1>
+            <p class="text-slate-400 text-lg md:text-xl leading-relaxed mb-12 max-w-3xl mx-auto">
+                Sou um desenvolvedor em início de carreira focado em **Java** e soluções **Full Stack**. 
+                Construo aplicações que resolvem problemas reais, como o sistema de monitoramento para minha comunidade em Salvador-BA.
+            </p>
+            <div class="flex flex-wrap gap-4 justify-center">
+                <a href="#projetos" class="bg-blue-600 text-white px-10 py-4 rounded-2xl font-black uppercase tracking-widest hover:bg-blue-700 hover:-translate-y-1 transition-all shadow-xl shadow-blue-600/20">
+                    Conhecer Projetos
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="projetos" class="py-24 px-6">
+        <div class="container mx-auto max-w-6xl">
+            <div class="mb-16 flex flex-col items-center text-center">
+                <div class="h-1 w-12 bg-blue-500 mb-6 rounded-full"></div>
+                <h2 class="text-4xl font-extrabold text-white tracking-tighter uppercase italic">Aprendizado na Prática</h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                
+                <div class="group relative bg-[#1e293b]/50 rounded-[2.5rem] p-8 md:p-12 border border-white/5 hover:border-blue-500/30 hover:-translate-y-2 transition-all duration-500 shadow-2xl overflow-hidden">
+                    <div class="absolute -inset-px bg-gradient-to-r from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="flex items-center justify-between mb-8">
+                            <div class="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center text-3xl text-blue-500 shadow-inner">🛡️</div>
+                            <div class="flex items-center gap-2 px-3 py-1 bg-green-500/10 rounded-full border border-green-500/20">
+                                <span class="relative flex h-2 w-2">
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                                </span>
+                                <span class="text-[9px] font-black text-green-500 uppercase tracking-widest italic">Live Online</span>
+                            </div>
+                        </div>
+                        <h4 class="text-2xl font-black text-white uppercase italic mb-4 tracking-tight">Portal Alerta JSI</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed mb-8">
+                            Sistema de monitoramento comunitário em tempo real. Integrei um **Bot de Telegram** que gerencia o status do bairro e alimenta um portal dinâmico via **API Node.js**. Foco em UX intuitiva e utilidade pública.
+                        </p>
+                        <div class="flex flex-wrap gap-4">
+                            <a href="https://bot-alerta-bairro.vercel.app" target="_blank" class="bg-white text-slate-900 font-black text-[10px] uppercase tracking-widest px-6 py-3 rounded-xl hover:bg-blue-500 hover:text-white transition-all">
+                                Acessar Projeto
+                            </a>
+                            <a href="https://github.com/Alailsonbispo/bot-alerta-bairro" target="_blank" class="text-slate-400 font-black text-[10px] uppercase tracking-widest border border-white/10 px-6 py-3 rounded-xl hover:bg-white/5 transition-all">
+                                Código
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group bg-[#1e293b]/50 rounded-[2.5rem] p-8 md:p-12 border border-dashed border-white/10 flex flex-col justify-center items-center text-center hover:border-blue-500/20 transition-all duration-500">
+                    <div class="w-14 h-14 bg-amber-500/10 rounded-2xl flex items-center justify-center text-3xl mb-6">☕</div>
+                    <h4 class="text-xl font-black text-white uppercase italic mb-2 tracking-tight">Foco em Java & POO</h4>
+                    <p class="text-slate-500 text-sm leading-relaxed italic mb-8 max-w-xs mx-auto">
+                        "Evoluindo para arquiteturas Spring Boot e APIs escaláveis. O próximo grande projeto já está sendo compilado."
+                    </p>
+                    <a href="https://github.com/Alailsonbispo" target="_blank" class="text-blue-500 font-black text-[10px] uppercase tracking-widest hover:underline">
+                        Explorar Repositórios ➔
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="habilidades" class="py-24 px-6 bg-slate-950/20">
+        <div class="container mx-auto max-w-5xl">
+            <h3 class="text-white font-extrabold text-2xl mb-12 uppercase italic tracking-tight text-center">Tech Stack:</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                
+                <div class="p-8 glass rounded-[2rem] border border-white/5 group hover:border-blue-500/20 transition-all">
+                    <p class="text-white font-black text-xl mb-3 group-hover:text-blue-500 transition-colors italic uppercase">Java</p>
+                    <div class="w-full bg-slate-800 h-1 rounded-full overflow-hidden">
+                        <div class="bg-blue-500 h-full w-[65%] animate-pulse"></div>
+                    </div>
+                </div>
+
+                <div class="p-8 glass rounded-[2rem] border border-white/5 group hover:border-blue-500/20 transition-all">
+                    <p class="text-white font-black text-xl mb-3 group-hover:text-blue-500 transition-colors italic uppercase">Node.js</p>
+                    <div class="w-full bg-slate-800 h-1 rounded-full overflow-hidden">
+                        <div class="bg-blue-500 h-full w-[75%] animate-pulse"></div>
+                    </div>
+                </div>
+
+                <div class="p-8 glass rounded-[2rem] border border-white/5 group hover:border-blue-500/20 transition-all">
+                    <p class="text-white font-black text-xl mb-3 group-hover:text-blue-500 transition-colors italic uppercase">JS ES6</p>
+                    <div class="w-full bg-slate-800 h-1 rounded-full overflow-hidden">
+                        <div class="bg-blue-500 h-full w-[80%] animate-pulse"></div>
+                    </div>
+                </div>
+
+                <div class="p-8 glass rounded-[2rem] border border-white/5 group hover:border-blue-500/20 transition-all">
+                    <p class="text-white font-black text-xl mb-3 group-hover:text-blue-500 transition-colors italic uppercase">UI Design</p>
+                    <div class="w-full bg-slate-800 h-1 rounded-full overflow-hidden">
+                        <div class="bg-blue-500 h-full w-[70%] animate-pulse"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-32 text-center border-t border-white/5">
+        <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-6 uppercase italic tracking-tighter">Pronto para <br>o próximo passo.</h2>
+        <p class="text-slate-500 mb-12 max-w-md mx-auto text-sm leading-relaxed">
+            Interessado em um desenvolvedor dedicado e focado em soluções práticas? 
+            Vamos conversar sobre como posso contribuir para o seu time.
         </p>
         
-        <div class="header-actions">
-            <a href="https://www.linkedin.com/in/alailson-bispo-b645663ab/" 
-               target="_blank" 
-               rel="noopener noreferrer" 
-               class="btn-primary"
-               aria-label="Visitar perfil no LinkedIn">
-                LinkedIn
-            </a>
-            <a href="#curriculo" 
-               class="btn-secondary"
-               aria-label="Ver currículo">
-                Ver Currículo
-            </a>
-            <a href="#recados" 
-               class="btn-text"
-               aria-label="Ir para seção de recados">
-                Deixar Recado
-            </a>
+        <a href="https://wa.me/5571992622620" target="_blank" class="bg-white text-slate-900 px-12 py-5 rounded-2xl font-black uppercase tracking-widest hover:scale-105 transition-all inline-block shadow-2xl">
+            Mandar Mensagem ✉️
+        </a>
+
+        <div class="mt-20 flex justify-center gap-10 opacity-50 hover:opacity-100 transition-opacity">
+            <a href="https://github.com/Alailsonbispo" target="_blank" class="text-white text-[10px] font-black tracking-widest uppercase">GitHub</a>
+            <a href="#" target="_blank" class="text-white text-[10px] font-black tracking-widest uppercase">LinkedIn</a>
         </div>
-    </header>
-
-    <section class="xp-section" aria-labelledby="xp-title">
-        <h2 id="xp-title">Evolução Técnica</h2>
-        <div class="xp-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="45">
-            <div class="xp-fill"></div>
-        </div>
-        <p class="xp-text">Carregando progresso...</p>
-    </section>
-
-    <!-- NOVA SEÇÃO: CURRÍCULO INTERATIVO -->
-    <section class="curriculo-section" id="curriculo" aria-labelledby="curriculo-title">
-        <h2 id="curriculo-title">Currículo</h2>
-        
-        <div class="curriculo-card">
-            <div class="curriculo-preview">
-                <div class="pdf-thumbnail">
-                    <span class="pdf-icon">📄</span>
-                    <div class="pdf-pages">
-                        <div class="page-thumb"></div>
-                        <div class="page-thumb"></div>
-                    </div>
-                </div>
-                
-                <div class="curriculo-info">
-                    <h3>Alailson Bispo - Desenvolvedor Java/Spring Boot</h3>
-                    <p class="file-info">
-                        <span class="file-size">📊 PDF • 245 KB</span>
-                        <span class="update-date">🔄 Atualizado em: Fevereiro/2026</span>
-                    </p>
-                    
-                    <div class="skill-tags">
-                        <span class="skill-tag">Java</span>
-                        <span class="skill-tag">Spring Boot</span>
-                        <span class="skill-tag">HTML5</span>
-                        <span class="skill-tag">CSS3</span>
-                        <span class="skill-tag">JavaScript</span>
-                        <span class="skill-tag">PostgreSQL</span>
-                        <span class="skill-tag">Git</span>
-                        <span class="skill-tag">REST APIs</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="curriculo-actions">
-                <button onclick="visualizarCurriculo()" class="btn-view">
-                    👁️ Visualizar
-                </button>
-                <a href="./assets/curriculo-alailson.pdf" 
-                   download 
-                   class="btn-download"
-                   onclick="trackDownload()">
-                    ⬇️ Download PDF
-                </a>
-                <button onclick="copiarLinkCurriculo()" class="btn-share">
-                    🔗 Compartilhar
-                </button>
-            </div>
-        </div>
-        
-        <!-- Estatísticas do currículo -->
-        <div class="curriculo-stats">
-            <div class="stat-item">
-                <span class="stat-value" id="downloadCount">0</span>
-                <span class="stat-label">Downloads</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-value" id="viewCount">0</span>
-                <span class="stat-label">Visualizações</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-value">9+</span>
-                <span class="stat-label">Anos de Exp</span>
-            </div>
-        </div>
-    </section>
-
-    <section class="projects" aria-labelledby="projects-title">
-        <h2 id="projects-title">Projetos em Destaque</h2>
-        <div class="project-grid">
-            
-            <article class="project-card">
-                <div class="project-badge">LIVE</div>
-                <h3>Blog Pessoal & Portfolio</h3>
-                <p>Interface interativa explorando manipulação de DOM e eventos assíncronos com JavaScript.</p>
-                <div class="project-tech">
-                    <span class="tech-tag">HTML5</span>
-                    <span class="tech-tag">CSS3</span>
-                    <span class="tech-tag">JavaScript</span>
-                </div>
-                <a href="https://alailsonbispo.github.io/ladingpage/" 
-                   target="_blank" 
-                   rel="noopener noreferrer" 
-                   class="project-link">
-                    Ver Projeto <span aria-hidden="true">→</span>
-                </a>
-            </article>
-
-            <article class="project-card">
-                <div class="project-badge focus">FOCO</div>
-                <h3>API RESTful com Spring Boot</h3>
-                <p>Desenvolvimento de microsserviços, persistência em banco de dados SQL e arquitetura limpa.</p>
-                <div class="project-tech">
-                    <span class="tech-tag">Java</span>
-                    <span class="tech-tag">Spring</span>
-                    <span class="tech-tag">PostgreSQL</span>
-                </div>
-                <a href="https://github.com/Alailsonbispo" 
-                   target="_blank" 
-                   rel="noopener noreferrer" 
-                   class="project-link">
-                    GitHub <span aria-hidden="true">→</span>
-                </a>
-            </article>
-
-        </div>
-    </section>
-
-    <section class="social" aria-labelledby="social-title">
-        <h2 id="social-title">Conexões</h2>
-        <div class="social-links">
-            <a href="https://github.com/Alailsonbispo" 
-               target="_blank" 
-               rel="noopener noreferrer" 
-               class="social-card"
-               aria-label="GitHub">
-                GitHub
-            </a>
-            <a href="https://www.instagram.com/alailsonsb" 
-               target="_blank" 
-               rel="noopener noreferrer" 
-               class="social-card"
-               aria-label="Instagram">
-                Instagram
-            </a>
-        </div>
-    </section>
-
-    <section class="recados" id="recados" aria-labelledby="recados-title">
-        <h2 id="recados-title">Deixe seu Feedback</h2>
-        
-        <form class="recado-form" id="recadoForm" novalidate>
-            <div class="form-group">
-                <label for="nome" class="sr-only">Seu nome</label>
-                <input 
-                    type="text" 
-                    id="nome"
-                    name="nome" 
-                    placeholder="Seu nome..." 
-                    required 
-                    aria-required="true"
-                    minlength="3"
-                    maxlength="50"
-                />
-                <div class="error-message" id="nome-error"></div>
-            </div>
-            
-            <div class="form-group">
-                <label for="mensagem" class="sr-only">Sua mensagem</label>
-                <textarea 
-                    id="mensagem"
-                    name="mensagem" 
-                    placeholder="Sua mensagem..." 
-                    required
-                    aria-required="true"
-                    minlength="5"
-                    maxlength="500"
-                ></textarea>
-                <div class="error-message" id="mensagem-error"></div>
-                <div class="char-counter" id="charCounter">500 caracteres restantes</div>
-            </div>
-            
-            <button type="submit" class="submit-btn" id="submitBtn">
-                Enviar Mensagem
-            </button>
-        </form>
-        
-        <div id="listaRecados" class="lista-recados" aria-live="polite"></div>
-    </section>
-
-    <footer class="footer">
-        <p>Desenvolvido por <span class="highlight">Alailson Bispo</span> • 2026</p>
-        <div class="footer-links">
-            <button onclick="scrollToTop()" class="footer-btn" aria-label="Voltar ao topo">
-                ↑ Topo
-            </button>
-            <button onclick="showKonamiHint()" class="footer-btn" aria-label="Mostrar dica do easter egg">
-                🎮 Hint
-            </button>
-        </div>
+        <p class="mt-16 text-[9px] text-slate-700 font-black tracking-[0.5em] uppercase italic">
+            &copy; 2026 Alailson Bispo &bull; Salvador, BA
+        </p>
     </footer>
 
-    <!-- Modal de visualização do PDF -->
-    <div id="pdfModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="fecharModal()">&times;</span>
-            <iframe id="pdfViewer" src="" frameborder="0" title="Visualização do Currículo"></iframe>
-        </div>
-    </div>
-
-    <!-- Scripts -->
-    <script src="script.js" defer></script>
 </body>
 </html>
